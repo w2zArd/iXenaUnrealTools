@@ -1,87 +1,169 @@
 # iXenaUnrealTools
 
-## 0.6.2: reconnect and build-state fix
-
-VSCode silently probes the connection every second and discovers a restarted Editor. Successful or failed Live Coding responses release build-busy state without waiting for a notification to be dismissed. UE5.9 JSON string keys are converted using `FString(*Pair.Key).ToLower()`. Existing 0.6.1 native binaries remain protocol-compatible.
-
 **English** · [简体中文](README.md)
 
-A VSCode toolbox and Editor communication plugin for Unreal Engine 5. Author: **黄小宇**. License: **MIT**. Source release: **0.6.2**.
+iXenaUnrealTools is a toolkit for Unreal Engine 5 C++ development. It consists of a **VSCode extension** and an optional **Unreal Editor communication plugin**. It provides project builds, Live Coding, module and descriptor editing, C++ class generation, editor console commands, and performance monitoring.
 
-## Components
+- **Author:** 黄小宇
+- **License:** MIT
+- **Repository:** [w2zArd/iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools)
+- **Extension ID:** `ixena-unreal-tools.ixena-unreal-tools`
+- **Platforms:** The VSCode extension supports applicable desktop environments; some Windows integration features are Windows-only. The UE plugin provides source for Windows, macOS, and Linux and must be built using the matching UE toolchain.
 
-| Directory | Purpose |
-| --- | --- |
-| [iXenaUnrealTools-VSCode](iXenaUnrealTools-VSCode/README.en.md) | Build/stop/debug tasks, engine selection, UHT, class creation, project editors, connections, console commands, and performance monitoring |
-| [iXenaUnrealTools-UnrealPlugin](iXenaUnrealTools-UnrealPlugin/README.en.md) | UE Editor plugin source, standalone Tools build scripts, and local validation instructions |
+## Screenshots
 
-The repository component names may contain hyphens. The actual UE plugin is `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge`; its descriptor and C++ module remain named `iXenaUnrealBridge`. Its Plugins browser category is **iXena**.
+![iXenaUnrealTools Screenshot 1](Screenshots/001.png)
 
-## Getting started
+![iXenaUnrealTools Screenshot 2](Screenshots/002.png)
 
-1. Install `ixena-unreal-tools-0.6.2.vsix` and reload VSCode.
-2. Open your UE workspace. In **Editor Connection & Tools → Connection & setup**, select **Initialize engine plugin**.
-3. Choose the connection:
-   - **iXena Unreal Plugin** opens this repository. Download the UE component. Put `iXenaUnrealBridge` under project `Plugins` or engine `Engine/Plugins/iXena`, build it with the chosen engine, enable it, and restart Editor. The component's Tools scripts can create an installable package.
-   - **Epic Unreal MCP** asks for the IP address, port, and path, defaulting to `127.0.0.1`, `8000`, `/mcp`. Enable official Unreal MCP and the required toolsets in UE, then check the connection.
-4. Select the actual project and engine and run **Check connection / plugin status**.
+![iXenaUnrealTools Screenshot 3](Screenshots/003.png)
 
-Initialization does not download files, launch UAT, copy plugins, or edit a project descriptor. Existing project-build and explicit Live Coding commands remain available.
+## Repository layout
 
-Example paths throughout the documentation are public examples:
+```text
+iXenaUnrealTools/
+├── iXenaUnrealTools-VSCode/       # VSCode extension
+├── iXenaUnrealTools-UnrealPlugin/ # UE plugin and build scripts
+│   ├── iXenaUnrealBridge/        # Actual UE plugin directory
+│   └── Tools/
+├── README.md
+├── README.en.md
+└── LICENSE
+```
 
-- Project: `D:\Develop\UnrealEngine\UE5Test\UE5Test.uproject`
-- Project plugin: `D:\Develop\UnrealEngine\UE5Test\Plugins\iXenaUnrealBridge`
-- Engine plugin: `D:\Engines\UE_5.9\Engine\Plugins\iXena\iXenaUnrealBridge`
+## Install the VSCode extension
 
-Use one installation location. Retain the descriptor, module manifests, and other required build output; copying only the DLL is insufficient.
+1. Install iXenaUnrealTools using either method:
+   - **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools)** (recommended): Search for `iXenaUnrealTools` in VSCode and install it directly.
+   - **[GitHub Releases](https://github.com/w2zArd/iXenaUnrealTools/releases)**: Download the `.vsix` package for your preferred version, or build from source.
+2. In VSCode Extensions, select **Install from VSIX** and choose the package.
+3. Run `Developer: Reload Window`.
+4. Open your Unreal Engine project or UE-generated `.code-workspace`, then open the **iXena Unreal** sidebar.
 
-## Grouped tools
+If an earlier extension with publisher `ixena-local` is installed, disable or uninstall it to avoid duplicate commands.
 
-| Group | Contents |
-| --- | --- |
-| Connection & setup | Initialization, target selection, connection mode/endpoint, status |
-| Build & Live Coding | Live Coding and native Editor full builds |
-| Runtime & debugging | CPU/memory monitor, Unreal Insights, console commands/CVars |
-| Logs & help | Live output, last Live Coding log, repository/manual installation |
+## Initialize UE communication
 
-Only the connection group is expanded by default. Stable group IDs preserve identity across language changes. The native UE floating window is available under **iXena → Open Tools Panel**.
+Open **iXena Unreal → Editor Communication → Connection & Initialization → Initialize Engine Plugin**, then choose a transport.
 
-## Languages
+### Option A: iXena Unreal Bridge (recommended)
 
-VSCode runtime UI supports `auto`, `zh-CN`, and `en`. Auto uses Simplified Chinese for Chinese VSCode locales and English otherwise. Use **Switch Interface Language** or `iXenaUnrealTools.language` for dynamic UI.
+1. Download `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge` from the repository, keeping its `.uplugin`, `Source`, `Resources`, and other files.
+2. Close Unreal Editor and copy the plugin to **one** of these locations:
 
-Static command/context-menu titles, view names, and settings descriptions use `package.nls*.json` and follow the VSCode **display language**. Use Configure Display Language and reload to change them. Open webviews update their language without replacing unsaved drafts or monitoring history.
+   - Project: `D:\Develop\UnrealEngine\UE5Test\Plugins\iXenaUnrealBridge`
+   - Engine: `D:\Engines\UE_5.9\Engine\Plugins\iXena\iXenaUnrealBridge`
 
-The UE window has its own Auto / 简体中文 / English selector. Auto follows UE's current language without modifying the Editor's global setting. Identifiers, paths, user content, and original engine logs are not translated. Generated C++ header comments remain Chinese.
+3. Build **Development Editor** using the matching Unreal Engine and C++ toolchain, or use the packaging scripts below.
+4. Enable the plugin in **UE Plugins → iXena**, then restart Unreal Editor when prompted.
+5. Select the correct project and engine in VSCode; wait for automatic reconnection or use **Check Connection / Plugin Status**.
 
-## Upgrading from 0.5.0
+**Important:** Initialization does not automatically download, compile, or install the plugin. Do not load two copies of the same plugin from both project and engine directories. A DLL alone is insufficient: retain the `.uplugin`, module manifests, and required files.
 
-The publisher is now `ixena-unreal-tools`, making the extension ID `ixena-unreal-tools.ixena-unreal-tools`. The previous local extension used `ixena-local.ixena-unreal-tools`. Stop old tasks and disable/uninstall the old extension before installing this release to avoid duplicate commands.
+#### Build on Windows
 
-If the old version registered Windows Explorer menus, remove those with the old extension before registering the new menus. Stored per-extension workspace state is not automatically migrated; reselect your configuration and engine.
+Run from `iXenaUnrealTools-UnrealPlugin`:
 
-Bridge protocol 1 explicitly supports plugin versions 0.5.0, 0.6.0 and 0.6.1. Rebuild the 0.6.1 plugin for the new native language selector and the C4459 parameter-shadowing fix. Restart UE after replacing a loaded module.
+```powershell
+New-Item -ItemType Directory -Force "D:\Builds" | Out-Null
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\Build-Plugin.ps1 `
+  -EngineRoot "D:\Engines\UE_5.9" `
+  -Package "D:\Builds\iXenaUnrealBridge-UE5.9" `
+  -Language en
+```
 
-## Publishing
+#### Build on macOS / Linux
 
-- [Repository](https://github.com/w2zArd/iXenaUnrealTools)
-- [Releases](https://github.com/w2zArd/iXenaUnrealTools/releases): assets are uploaded by the maintainer.
-- Planned [public Marketplace page](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools): available only after publication; this source bundle does not assert a live listing.
-- [Publisher management](https://marketplace.visualstudio.com/manage/publishers/ixena-unreal-tools): maintainer sign-in page, not the user installation URL.
+```bash
+mkdir -p /tmp/ixena-builds
+bash ./Tools/Build-Plugin.sh \
+  --engine "/absolute/path/to/UE_5.x" \
+  --package "/tmp/ixena-builds/iXenaUnrealBridge"
+```
 
-Keep the two component directories at the repository root; an additional UnrealPlugins directory is unnecessary. GitHub directory URLs use `tree/<branch>/<directory>`. Documentation uses relative links and initialization opens the repository root, avoiding assumptions about the default branch.
+The scripts stream UAT/UBT output and **package only; they do not install**. With the editor closed, copy the complete output, enable the plugin, and restart the editor. The output directory must be empty or not yet exist.
 
-## Building and validation
+### Option B: Epic Unreal MCP
 
-In the VSCode component: `npm ci`, `npm test`, `npm --prefix test/ui ci`, `npm run test:ui`, then `npm run package`.
+Enter the MCP service endpoint in the initialization wizard:
 
-In the UE component: follow its README for `Tools/Build-Plugin.ps1` or `Tools/Build-Plugin.sh`. They call the chosen engine's RunUAT BuildPlugin directly with inherited output and need no Node runtime. Each platform requires its own supported UE C++ toolchain.
+| Setting | Example |
+|---|---|
+| IP / host | `127.0.0.1` |
+| Port | `8000` |
+| Path | `/mcp` |
+| Full URL | `http://127.0.0.1:8000/mcp` |
 
-TypeScript, protocol simulation, DOM interaction, and manual script tests are provided. Actual UE C++ compilation, Windows PowerShell execution, and native Slate runtime validation were unavailable in the delivery environment. Follow each component's validation guide on the target machine.
+The appropriate MCP server and toolsets must already be enabled and running in UE. Entering an address **does not enable MCP inside Unreal Editor**. Available capabilities depend on the server and its toolsets. MCP and iXena Bridge are alternative communication options.
 
-Live Coding depends on engine and platform capabilities; the Bridge does not expose it on macOS/Linux. Official Unreal MCP listens locally by default. Configuring a client IP does not change the UE listener, and project/engine identity checks still apply.
+## Features and usage
+
+| Feature | How to use it |
+|---|---|
+| **Build / Stop / Debug** | Choose a UE task configuration in the status bar or sidebar, then run Build, Rebuild, Clean, Stop, or Debug; reuse UE-generated VSCode tasks/launch configurations |
+| **Live Coding** | Enable Live Coding in UE Editor, keep the matching project open, and click **Live Coding**; the status updates when UE returns its final result |
+| **Multiple engines** | Select a UE engine in the sidebar; switching the build toolchain does not change `.uproject` `EngineAssociation` |
+| **UHT / IntelliSense** | Run the UHT and language-server refresh commands; reflection changes may still require a full build |
+| **Source explorer** | Browse project and plugin sources by `Public`, `Private`, and other folders, with configurable panes |
+| **`.h` ↔ `.cpp` navigation** | Right-click in an editor, tab, or file tree to open the matching file; choose manually if several candidates exist |
+| **Create C++ class** | Launch the wizard from the file tree or sidebar, select parent class, module, class name and path, preview, then generate `.h/.cpp` |
+| **`Build.cs` dependencies** | Open the dependency editor under Targets / Modules to edit safely recognized Public / Private module dependencies |
+| **`.uproject` / `.uplugin` editing** | Select a descriptor under Targets / Modules or right-click to open its visual editor; save with `Ctrl+S` |
+| **UE console commands / CVars** | Search commands in Runtime & Debugging, inspect help, enter arguments, and send to the connected UE instance |
+| **CPU / memory monitoring** | View Unreal Editor process CPU, memory, frame intervals, and history; launch Unreal Insights |
+| **Windows Explorer context menus** | Explicitly register or remove `.uproject` / `.uplugin` Windows context-menu entries |
+
+### Floating panel inside Unreal Editor
+
+After enabling `iXenaUnrealBridge`, use **iXena → Open Tools Panel** in the Unreal Editor top menu, or the toolbar entry. The panel provides command/CVar search and execution, connection status, and CPU/memory readings. The plugin category is **iXena**.
+
+### Connection and Live Coding behavior
+
+- VSCode automatically checks connectivity in the background and attempts to reconnect after UE restarts.
+- Background checks never start Live Coding on their own.
+- Success, failure, and timeout are distinct states; **a timeout does not mean UE canceled compilation**.
+- Live Coding is intended primarily for supported Windows Editor environments. The plugin provides communication and other tools on macOS/Linux but not equivalent Live Coding.
+- For changes to `Build.cs`, `Target.cs`, module structure, or complex reflected class layouts, close the editor and perform a full build.
+- Logs reflect the output actually received; not every line from the separate Live Coding Console is guaranteed to appear in VSCode.
+
+## Localization
+
+Supports **Auto, Simplified Chinese, and English**.
+
+- VSCode dynamic UI: use the **UI Language** command or set `"iXenaUnrealTools.language": "auto"` (alternatively `zh-CN` or `en`).
+- VSCode static menus and command titles: follow the VSCode display language; reload when VSCode asks.
+- UE floating panel: select Auto / Simplified Chinese / English independently; Auto follows the UE editor language.
+- Common console commands have Chinese summaries in the Chinese UI while preserving original UE help and parameters. Unknown commands retain their original text.
+
+## Workspace configuration example
+
+```jsonc
+{
+  "folders": [
+    { "name": "UE5Test", "path": "D:\\Develop\\UnrealEngine\\UE5Test" }
+  ],
+  "settings": {
+    "iXenaUnrealTools.language": "auto",
+    "iXenaUnrealTools.engineRoots": ["D:\\Engines\\UE_5.9"],
+    "iXenaUnrealTools.performance.autoStartDebug": true
+  }
+}
+```
+
+Merge the settings into your existing `.code-workspace` as needed; do not overwrite UE-generated `tasks` or `launch` entries.
+
+## Troubleshooting
+
+**Plugin files are present, but VSCode cannot connect?** Check that the plugin is enabled, UE Editor was restarted, and the selected project and engine match. Copied files do not imply the plugin is loaded.
+
+**Why are some Live Coding log lines missing?** Some output remains in the standalone Live Coding Console. VSCode shows only what it receives.
+
+**Duplicate iXena commands in VSCode?** Check whether both the old `ixena-local` and current `ixena-unreal-tools` publisher versions are installed.
+
+**Two iXena top-level menus in UE?** Make sure QtQuickUI and Bridge use compatible menu registration, and restart UE after updating the Bridge DLL.
+
+**Plugin fails to load in another UE version?** Rebuild the plugin for the target engine, OS, and architecture rather than reusing a DLL from another version.
 
 ## License
 
-MIT — Copyright (c) 2026 黄小宇. See [LICENSE](LICENSE). Third-party dependencies retain their own licenses.
+MIT License. Copyright (c) 2026 黄小宇. See [LICENSE](LICENSE). Unreal Engine and third-party dependencies retain their respective licenses.
