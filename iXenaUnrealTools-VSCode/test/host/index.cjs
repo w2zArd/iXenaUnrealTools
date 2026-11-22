@@ -90,7 +90,7 @@ exports.run = async function run() {
   const root = path.resolve(__dirname, '..', '..');
   const workspace = process.env.IXENA_UNREALTOOLS_TEST_WORKSPACE;
   const sourceFile = path.join(workspace, 'Example.cpp');
-  const extension = vscode.extensions.getExtension('ixena-unreal-tools.ixena-unreal-tools');
+  const extension = vscode.extensions.getExtension('ixena-unreal-tools.ixena-unreal-tools-vscode');
   assert.ok(extension, 'Development extension is registered');
   await extension.activate();
   assert.ok(extension.isActive, 'Extension activates');

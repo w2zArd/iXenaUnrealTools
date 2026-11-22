@@ -1,11 +1,5 @@
 # iXena Unreal Bridge 0.6.2
 
-## 0.6.2 更新
-
-JSON 帮助资源解析的两处 `Pair.Key` 现先显式构造 `FString` 再转小写；UE5.9 已由使用者确认该改动可以编译。通讯协议 1 不变。VSCode 的自动重连不需要更改 UE 插件实现。
-
-作者：黄小宇。MIT License。用于 iXenaUnrealTools 的 UE 编辑器端通讯插件。
-
 ## 安装和构建
 
 VSCode 的“初始化引擎插件”只选择连接方式并打开仓库。请下载源码，将整个 `iXenaUnrealBridge` 目录放入一个位置，再由本机 UE C++ 工具链编译：
@@ -98,12 +92,3 @@ LiveCoding->Compile(ELiveCodingCompileFlags::WaitForCompletion, &Result);
 
 `ILiveCodingModule` 的精确接口以所选本机引擎的 `Engine/Source/Developer/Windows/LiveCoding/Public/ILiveCodingModule.h` 为准。
 
-## 多语言与 0.6.1 修复
-
-面板顶部提供 Auto / 简体中文 / English，Auto 跟随 UE 当前语言（zh 系列为简体中文，其余回退英文）。选择只影响本插件并保存在当前项目的编辑器用户设置，不修改 UE 全局语言。菜单和控件使用动态属性绑定，切换不重建输入框、不清除原有输出。常用命令显示中文摘要，并附上引擎返回的原始帮助和参数说明；未收录的命令保留原文，日志不改写。翻译资源位于 `Resources/ConsoleHelp.zh-CN.json`，安装时应连同 DLL、模块清单和 .uplugin 一并复制。
-
-0.6.1 修复 UE5.9 C4459：构造参数 LogPath 与引擎全局日志类别同名，已改为 InCompileLogPath；没有关闭编译警告。当前交付环境未实际编译 UE C++。
-
-### 0.6.1 原生菜单合并说明
-
-当前桥接插件不再注册第二个顶级 `iXena` 菜单；使用 `MainFrame.MainMenu.iXena` 扩展 QtQuickUI 原有菜单。另外保留「窗口（Window）」菜单和 UE 关卡工具栏作为入口。实际菜单合并由所选 UE 版本的 ToolMenus 机制决定，如发现菜单未合并，优先使用 Window/工具栏，避免同时启用新旧 Bridge DLL。

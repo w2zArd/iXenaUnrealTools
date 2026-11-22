@@ -47,7 +47,7 @@ try {
     $actual = @($config.PSObject.Properties.Name)
     if ($actual.Count -ne $required.Count -or @($required | Where-Object { $_ -cnotin $actual }).Count -gt 0 -or
         ($config.schemaVersion -isnot [int] -and $config.schemaVersion -isnot [long]) -or
-        $config.schemaVersion -ne 1 -or $config.extensionId -cne 'ixena-unreal-tools.ixena-unreal-tools') {
+        $config.schemaVersion -ne 1 -or $config.extensionId -cne 'ixena-unreal-tools.ixena-unreal-tools-vscode') {
         throw '右键菜单配置无效，请在 VSCode 中重新注册菜单。'
     }
     if ($config.uriScheme -isnot [string] -or $config.uriScheme -cnotmatch '^[a-z][a-z0-9+.-]{0,63}$') {
@@ -66,7 +66,7 @@ try {
     if ($encoded.Length + 8 -gt 24576) {
         throw '右键菜单请求过长。'
     }
-    $uri = $config.uriScheme + '://ixena-unreal-tools.ixena-unreal-tools/explorer?payload=' + $encoded
+    $uri = $config.uriScheme + '://ixena-unreal-tools.ixena-unreal-tools-vscode/explorer?payload=' + $encoded
     $start = New-Object System.Diagnostics.ProcessStartInfo
     $start.FileName = $codeExe
     # Base64url and the validated scheme contain no quotes or shell metacharacters.

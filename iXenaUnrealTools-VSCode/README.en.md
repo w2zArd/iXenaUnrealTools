@@ -1,130 +1,117 @@
-# iXenaUnrealTools 0.6.2
+# iXena Unreal Tools for VS Code
 
-## 0.6.2: reconnect and completion status
+**English** · [简体中文](README.md)
 
-The extension automatically checks the Editor connection every second and confirms connected endpoints every five seconds. Live Coding completion immediately releases the busy indicator; notifications do not block the build flow. The latest result remains visible in the Build & Live Coding group. Background probes never compile.
+A toolkit for Unreal Engine 5 development: builds and debugging, Live Coding, engine selection, C++ class creation, module and descriptor editing, and a visual Localization Workbench.
 
-[简体中文](README.md) · **Author: 黄小宇** · **MIT** · VSCode 1.96+
+**Author: 黄小宇** · **License: MIT** · **VS Code 1.96 or later**
 
-Unreal Engine C++ workspace tools for existing build/debug tasks, engine selection, UHT, source panes, module dependencies, descriptor editing and communication with a running UE Editor.
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools-vscode)
+- [GitHub repository](https://github.com/w2zArd/iXenaUnrealTools)
+- [GitHub Releases](https://github.com/w2zArd/iXenaUnrealTools/releases)
+- Extension ID: `ixena-unreal-tools.ixena-unreal-tools-vscode`
 
-**Version 0.6.1 uses manual UE plugin installation.** The VSIX provides an **Initialize Engine Plugin** entry and communication clients. It no longer bundles UE source, downloads binaries, runs a plugin installer or starts a plugin build automatically. UE source and standalone build scripts live in the sibling component.
+## Installation and entry points
 
-| Location | Contents |
+Install from the Marketplace, or choose **Install from VSIX** in the VS Code Extensions menu and select the downloaded package. Reload the window, then open the UE-generated `.code-workspace` or the project folder containing a `.uproject`.
+
+The **iXena Unreal** sidebar provides editor communication, localization, source panes, Targets / Modules, logs and tools. The status bar provides configuration, engine selection, build/stop and debug controls. An older installation with a different extension ID is a separate extension; disable it if duplicate controls remain.
+
+## Localization Workbench
+
+Open **iXena Unreal → Localization / Translations → Open Localization Workbench**. You can also right-click a `.po`, `.uproject` or `.uplugin`, or search for **iXenaUnrealTools: Localization** in the Command Palette.
+
+| Feature | Usage |
 | --- | --- |
-| [w2zArd/iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools) | Repository |
-| `iXenaUnrealTools-VSCode` | VSCode extension |
-| `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge` | UE plugin source |
-| `iXenaUnrealTools-UnrealPlugin/Tools` | Manual build scripts |
+| Automatic discovery | Opening the workbench scans workspace UE projects and their project `Plugins`, reading configurations in `Config/Localization` and PO catalogs in `Content/Localization`; file changes refresh discovery |
+| Target and culture selection | Choose a project/plugin target and a culture such as `en`, `zh-Hans` or `ja` |
+| Translation table | Inspect identity, source, translations, plural forms, references and comments; edit translations directly |
+| Search and filters | Search source, translations, identities and references in the selected target/culture; filter untranslated, review-needed and modified rows |
+| Progress and checks | View total, translated, untranslated and review counts; inspect fuzzy flags, `{Name}` format arguments and line-break differences |
+| Import | Import PO or the extension's CSV / JSON format; exact identity, source and plural matching prevents unrelated edits; confirm match counts before applying |
+| Export | Export the selected culture or all cultures of the selected target to PO / CSV / JSON, independently of table filters and pagination |
+| Automatic export | Enable export on save to create separate copies in all three formats when a discovered PO is saved |
+| UE operations | Run Gather & Export, Import & Compile, individual steps or open their configuration INI files |
+| Drafts and conflicts | Preserve drafts in the workspace; detect external revisions; save or discard changes before switching targets |
 
-## Install the VSCode extension
+The workbench invokes the selected engine's Commandlet directly. **It requires neither iXena Unreal Bridge nor MCP.** Existing PO files can be browsed, edited and exported without running UE. Collecting asset text and importing/compiling localization resources requires a runnable matching UE Editor installation.
 
-Choose **Install from VSIX** in VSCode's Extensions view, install `ixena-unreal-tools-0.6.2.vsix`, then reload the window.
+### Existing UE Localization Dashboard targets
 
-The publisher is `ixena-unreal-tools`; the new extension ID is **`ixena-unreal-tools.ixena-unreal-tools`**. The earlier local ID was `ixena-local.ixena-unreal-tools`, so installing this package does not replace it under the same ID. Disable or uninstall the old extension to avoid duplicate commands and buttons. If the old version registered Windows Explorer menus, remove those menus with the old extension before registering the new ones.
+1. Set up the target and cultures in UE. Run the Gather, Export, Import and Compile actions you need to generate the corresponding `Config/Localization/*.ini` files.
+2. Scan in VS Code and select a target and culture.
+3. Use **Gather & Export** to collect new text.
+4. Edit translations and click **Save translations**, or press `Ctrl+S` / `⌘+S`.
+5. Use **Import & Compile** to import the translations and generate `.locres` files through UE.
 
-The [publisher management page](https://marketplace.visualstudio.com/manage/publishers/ixena-unreal-tools) is for uploading and managing extensions, not a public listing. The [planned public listing](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools) follows the current publisher/name; its publication has not been verified. This delivery does not push the repository or publish a Marketplace/GitHub release.
+Existing targets retain their configurations. Add cultures to Dashboard-owned targets in UE, regenerate the configurations and rescan. Dashboard target settings and Commandlet INI files use different configuration structures; editing an INI does not update Dashboard settings.
 
-## Initialize a connection
+### Creating a target from VS Code
 
-Open **iXena Unreal → Editor Communication → Connection & setup → Initialize engine plugin…**. The same action is available from Quick Actions and the Command Palette.
+1. Click **New target** and select the project or a project plugin.
+2. Enter a target name such as `Game` and a native culture matching your source text, such as `en`.
+3. Enter target cultures, for example `en,zh-Hans,ja`.
+4. Run **Gather & Export**, then edit and save translations.
+5. Use **Add culture** for additional cultures, then gather and export again.
 
-| Mode | What initialization does | Required preparation |
-| --- | --- | --- |
-| iXena plugin | Saves the mode and opens the GitHub repository | Download source or a matching build, copy it manually, compile, enable and restart UE |
-| Epic Unreal MCP | Prompts for IP, port and endpoint path, then saves a validated client address | Enable the official Unreal MCP service; compilation also requires its Live Coding toolset |
+The extension creates independent `Config/Localization/iXena.<target>.<operation>.ini` files and `<target>.ixena-loc.json` in the selected scope. You can edit the INI files directly; UE still performs the operations. These targets are not automatically registered in the UE Dashboard. Keep one configuration owner for each localization data set.
 
-Initialization does not edit `.uproject`, start UAT or create a plugin directory. After preparing UE, select the intended project/engine and use **Check connection / plugin status**.
+Configure runtime loading paths for project targets, or `LocalizationTargets` / LoadingPolicy for plugin targets. Also configure **Localizations to Package** and **Internationalization Support** for packaging. Generating `.locres` does not configure its runtime loading automatically.
 
-### Plugin mode
+### Automatic export and logs
 
-Download the entire `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge` folder, including its `.uplugin` and Source. Save and close UE before placing it in one of these locations. Avoid loading duplicate copies in the same project/engine.
+Enable the workbench checkbox, or merge this setting into your workspace:
 
-| Scope | Example |
-| --- | --- |
-| Project | `D:\Develop\UnrealEngine\UE5Test\Plugins\iXenaUnrealBridge` |
-| Engine | `D:\Engines\UE_5.9\Engine\Plugins\iXena\iXenaUnrealBridge` |
-
-Build Development Editor with that engine's C++ toolchain. Enable **iXena Unreal Bridge** under **UE Plugins → iXena**, then restart as required. Alternatively, build a package with the scripts below and copy the complete output. Keep the descriptor, module manifests and required build metadata together with the native library.
-
-Run these examples from `iXenaUnrealTools-UnrealPlugin`. Create the output parent directory first. The package directory must be absent or empty, outside the engine and plugin source.
-
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\Build-Plugin.ps1 `
-  -EngineRoot "D:\Engines\UE_5.9" `
-  -Package "D:\Builds\iXenaUnrealBridge-UE5.9" `
-  -Language en
+```jsonc
+{
+  "settings": {
+    "iXenaUnrealTools.localization.autoExportOnSave": true
+  }
+}
 ```
 
-```bash
-bash ./Tools/Build-Plugin.sh \
-  --engine "/opt/UnrealEngine/UE_5.9" \
-  --package "/tmp/iXenaUnrealBridge-UE5.9" \
-  --language en
-```
+The extension writes `.po`, `.csv` and `.json` copies to `Saved/iXenaUnrealTools/LocalizationExports/<scope>/<target>-<identity>/<culture>/`. A target identity suffix prevents collisions between equally named projects or plugins. This setting does not automatically gather, compile or machine-translate text.
 
-These scripts stream the selected host engine's UAT/UBT output, propagate its exit code and inspect the result. They **build only; they do not install**. PDB/dSYM symbols are removed by default; use `-KeepSymbols` / `--keep-symbols` to retain them. The Windows script rejects CMD metacharacters in paths. Rebuild for a different engine, operating system or architecture.
+Commandlet output appears live in the existing task terminal. Stop first sends Ctrl+C. Each run keeps separate logs and pre-operation PO copies in `Saved/iXenaUnrealTools/LocalizationRuns/`. A failed step prevents later steps from running; existing PO translations are included in the import workflow before an export can overwrite them.
 
-### MCP mode
+### Text and format scope
 
-Defaults are `127.0.0.1`, `8000` and `/mcp`, producing `http://127.0.0.1:8000/mcp`. The wizard accepts explicit IPv4, IPv6 or localhost. Cancelling input preserves the previous settings.
+- UE GatherText collects new text from configured `LOCTEXT` / `NSLOCTEXT`, localizable `FText` and asset sources. Ordinary `FString`, hardcoded UI strings and non-localizable text are not automatically converted into translatable text.
+- Discovery covers workspace projects and their project plugins, not the entire engine, engine plugins or directories linked outside the project. Unsupported paths and ambiguous configurations produce notices.
+- PO is UE's translation exchange format. CSV / JSON use the extension's lossless interchange schema; import them into the extension, then run UE Import/Compile.
+- UTF-8 PO supports BOM, CRLF, escapes, multiline entries, plurals and comments. Crowdin identity-format catalogs are shown read-only; open the original PO to edit those.
+- The workbench manages text translations. It does not replace localized audio, dialogue import, localized asset replacement or regional date/number formatting, and does not call machine translation services.
 
-The address configures the client only; it does not change UE's listener. The official service defaults to local use. Entering another IP does not automatically enable cross-machine operation: the service must be reachable and must report the exact selected project/engine identity. This version does not map remote paths to local paths. Third-party similarly named MCP plugins may expose different tools and metadata.
+## Other development tools
 
-Console commands and performance monitoring use a loaded iXena Bridge independently of the chosen Live Coding transport, so they can still be used when MCP is selected for compilation.
-
-## Organized panels and languages
-
-Connection status stays at the top. Actions are grouped in four collapsible sections:
-
-| Group | Actions |
+| Feature | Usage |
 | --- | --- |
-| Connection & setup | Initialization, project/engine selection, connection mode and checks; MCP endpoint when selected |
-| Build & Live Coding | Live Coding and native Editor full build |
-| Runtime & debugging | CPU/memory monitor, Unreal Insights and UE commands/CVars |
-| Logs & help | Live output, last Live Coding log and repository instructions |
+| Build / stop / debug | Read existing workspace tasks and launch configurations; choose a configuration and reuse the project's task terminal |
+| Multiple engines | Select an engine in the status bar; configure roots with `iXenaUnrealTools.engineRoots` |
+| UHT / IntelliSense | Refresh UHT and language services separately; use a full build when module or reflection changes require it |
+| C++ class wizard | Create a class from the panel or context menu; choose parent, module, Public/Private and subdirectory; generated headers have Chinese comments |
+| Header/source switching | Switch paired `.h/.cpp` files from the editor or resource tree |
+| Source panes | Configure `iXenaUnrealTools.explorer.panes` or compatible `multiExplorer.panes` to browse project/plugin Public, Private and other folders |
+| Module dependencies | Visually edit recognized static Public/Private Build.cs dependencies; retain manual editing for complex conditional C# |
+| Descriptors | Visually edit `.uproject` / `.uplugin` while preserving unknown fields; open the underlying JSON when needed |
+| Editor communication | Optional iXena Bridge or Epic Unreal MCP for Live Coding, connection state and logs |
+| Commands and performance | Search registered UE commands/CVars, inspect help and send commands; inspect CPU/memory and open Unreal Insights |
+| Windows context menus | Explicitly register/remove current-user `.uproject` / `.uplugin` Explorer commands |
 
-Simplified Chinese and English are supported. Dynamic UI follows VSCode by default; choose **Interface Language**, or set `iXenaUnrealTools.language` to `auto`, `zh-CN` or `en`. Status bars, sidebars and dynamic panels update; Webviews retain uncommitted edits and performance history.
+## Optional UE communication plugin
 
-**Command Palette entries, context menus and static view titles follow VSCode's display language.** The manual extension setting controls dynamic UI only. Follow VSCode's restart instructions when changing its display language. The native UE floating panel has its own Auto / English / 简体中文 selector; Auto follows the UE UI culture.
+Choose a transport using **Initialize Engine Plugin**. Plugin mode opens the repository. Download `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge`, close UE and copy it to one location:
 
-Source code, technical identifiers, engine-produced logs and user names are preserved. Generated C++ header comments remain Chinese by design.
+- Project: `D:\Develop\UnrealEngine\UE5Test\Plugins\iXenaUnrealBridge`
+- Engine: `D:\Engines\UE_5.9\Engine\Plugins\iXena\iXenaUnrealBridge`
 
-## Main features
+Build with the matching engine's C++ toolchain, or package with the Windows / macOS / Linux scripts under `iXenaUnrealTools-UnrealPlugin/Tools`. Enable it in **UE Plugins → iXena** and reopen UE. Keep the complete plugin directory and metadata. The initialization command does not automatically download or install it.
 
-| Feature | Behavior |
-| --- | --- |
-| Build / Stop / Debug | Uses existing `.code-workspace`, tasks and launch settings. Debugging uses a matching launch. Complex tasks can run through the original VSCode task picker |
-| Build terminal | Tries to reuse a terminal per project. Ordinary task cancellation first uses Ctrl+C, then falls back to task termination if needed; UBT logs are archived when available |
-| Multiple engines | Discovers engines from tasks/settings. Toolchain switching does not change EngineAssociation; regenerate launch settings if executable paths no longer match |
-| UHT / IntelliSense | Refresh UHT independently and request a language-server rescan. Engines without the standalone mode need their normal build workflow |
-| Source panes | Choose a project/plugin scope and browse Public, Private and other folders. Existing `multiExplorer.panes` is supported; absent pane settings hide this view |
-| Header/source switch | Context actions match filenames and module paths; multiple candidates require selection |
-| C++ class wizard | 20 built-in parent templates and custom parents, module/name/visibility/subdirectory selection and preview; existing files are not overwritten |
-| Build.cs dependencies | Visual editing of recognized static Public/Private dependencies; complex conditional C# remains a manual edit |
-| Descriptors | Visual `.uproject/.uplugin` editing preserves unknown fields and updates the document buffer; saving remains explicit |
-| UE console | Searches registered commands/CVars, shows help/current values and previews the command and target before sending |
-| CPU/memory | Samples the selected UE Editor process, retaining up to 120 samples; breakpoints or stalls preserve the last reading and mark it stale |
-| Unreal Insights | Opens the instance's engine tool without automatically starting Trace recording |
-| Windows Explorer | Explicitly register/remove current-user `.uproject/.uplugin` menus; Windows 11 uses Show more options |
+For MCP, enter the IP, port and path of an enabled service. The default example is `127.0.0.1:8000/mcp`; service capabilities depend on the engine and enabled toolsets. Live Coding availability depends on the engine/platform. Localization Commandlet launching independently supports Windows, macOS and Linux editor paths.
 
-The class wizard previews required module dependencies; use the Build.cs editor to add them. New reflected classes, module changes and Build.cs/Target.cs changes generally require a full build and an editor restart as appropriate.
+## Workspace settings
 
-After enabling the UE plugin, use **UE top menu iXena → Open Tools Panel** for a movable native window with status, commands and current performance values.
-
-## Compilation, output and platform boundaries
-
-Windows smart builds request Live Coding only after matching the Editor to the selected project/engine. The existing UBT task is used when no matching Editor is confirmed. Connection failure, compilation failure or an uncertain result does not trigger another UBT build. Protocol 1 explicitly accepts Bridge 0.5.0, 0.6.0 and 0.6.1.
-
-Plugin Live Coding output consists of actual captured UE GLog messages; the separate Live Coding Console **does not necessarily forward every compiler line**. MCP progress depends on server notifications. Recognized absolute file diagnostics enter a dedicated Problems collection. A timeout does not cancel UE compilation, and this version has no reliable Live Coding cancellation command.
-
-macOS/Linux have plugin source, manual build scripts, console/performance interfaces and a native full-build entry. Live Coding reports unavailable on these platforms in this version. Existing Windows task adaptation and Explorer integration do not imply all legacy features are cross-platform.
-
-This delivery environment has no real UE C++ toolchain or Windows/macOS GUI validation, and no full build matrix across older UE5 versions. The `FCompileOutput` constructor parameter is now `InCompileLogPath` to address the reported shadowing/C4459 issue; static correction does not replace a target-engine build. See [VALIDATION.md](VALIDATION.md) for validation boundaries.
-
-## Workspace example
-
-Merge the relevant entries into an existing workspace; retain UE-generated tasks and launch configurations.
+Merge into the existing `.code-workspace`, keeping its tasks and launch configurations:
 
 ```jsonc
 {
@@ -134,7 +121,7 @@ Merge the relevant entries into an existing workspace; retain UE-generated tasks
   "settings": {
     "iXenaUnrealTools.language": "auto",
     "iXenaUnrealTools.engineRoots": ["D:\\Engines\\UE_5.9"],
-    "iXenaUnrealTools.performance.autoStartDebug": true,
+    "iXenaUnrealTools.localization.autoExportOnSave": true,
     "iXenaUnrealTools.explorer.panes": [
       { "label": "Public", "roots": ["${workspaceFolder:UE5Test}/Source/UE5Test/Public"] },
       { "label": "Private", "roots": ["${workspaceFolder:UE5Test}/Source/UE5Test/Private"] }
@@ -143,22 +130,24 @@ Merge the relevant entries into an existing workspace; retain UE-generated tasks
 }
 ```
 
-## Development and license
+Dynamic interfaces support `auto`, `zh-CN` and `en`. Static command titles and context menus follow the VS Code display language. Identifiers, user data and engine logs retain their original text.
 
-From `iXenaUnrealTools-VSCode`:
+## Screenshots
+
+![Project and plugin descriptor editor](https://raw.githubusercontent.com/w2zArd/iXenaUnrealTools/main/Screenshots/001.png)
+
+![Module dependency editor](https://raw.githubusercontent.com/w2zArd/iXenaUnrealTools/main/Screenshots/002.png)
+
+![Unreal Editor performance monitor](https://raw.githubusercontent.com/w2zArd/iXenaUnrealTools/main/Screenshots/003.png)
+
+## Building from source
+
+Run inside `iXenaUnrealTools-VSCode`:
 
 ```bash
 npm ci
-npm test
-npm --prefix test/ui ci
-npm run test:ui
+npm run compile
 npm run package
 ```
 
-`npm run test:host` additionally requires a working desktop/display service. Development dependencies are excluded from the VSIX.
-
-Licensed under the [MIT License](LICENSE), copyright 黄小宇. Preserve copyright and permission notices in distributed copies. Unreal Engine and other dependencies retain their respective licenses.
-
-### 0.6.1: bilingual console help, connection and menu fixes
-
-Chinese mode adds curated meanings for common CVars while retaining the untouched native UE help, including all parameters. English mode uses the original help. Unknown entries are not machine-translated. Chinese keyword search requires the matching 0.6.1 bridge. Connection checks are not blocked by ongoing UBT tasks and report stale or mismatched bridge files. The bridge extends QtQuickUI’s existing iXena submenu and also provides Window/toolbar access. Restart UE after replacing the native module.
+Source and software are distributed under [MIT](LICENSE). Unreal Engine and other dependencies retain their own licenses.

@@ -1,128 +1,117 @@
-# iXenaUnrealTools 0.6.2
+# iXena Unreal Tools for VS Code
 
-## 0.6.2：自动重连与编译完成状态
+**简体中文** · [English](README.en.md)
 
-通讯状态每秒自动检查；已连接时每 5 秒向 UE/MCP 进行一次确认。无需点击通知解除连接/构建状态：收到 UE Live Coding 最终结果就解锁编译按钮，“编译与热更新”分组保留最近一次结果。后台探测只执行 ping/身份检查，不自动启动编译，前台操作会避开正在进行的后台 ping。
+Unreal Engine 5 开发工具箱：构建与调试、Live Coding、多引擎切换、C++ 类向导、模块与描述文件编辑，以及可视化本地化工作台。
 
-[English](README.en.md) · **作者：黄小宇** · **MIT** · VSCode 1.96+
+**作者：黄小宇** · **许可证：MIT** · **VS Code 1.96 或更高版本**
 
-面向 Unreal Engine C++ 工作区的 VSCode 工具箱：已有任务构建与调试、多引擎选择、UHT、源码分栏、模块依赖和描述文件编辑，以及与运行中 UE Editor 的通讯。
+- [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools-vscode)
+- [GitHub 仓库](https://github.com/w2zArd/iXenaUnrealTools)
+- [GitHub Releases](https://github.com/w2zArd/iXenaUnrealTools/releases)
+- 扩展 ID：`ixena-unreal-tools.ixena-unreal-tools-vscode`
 
-**0.6.1 改为手动安装 UE 插件。** VSIX 只提供“初始化引擎插件”入口和通讯客户端，不再包含 UE 插件源码、自动下载、自动编译或安装器。UE 源码和独立构建脚本位于同仓库的 `iXenaUnrealTools-UnrealPlugin`。
+## 安装与入口
 
-- 仓库：[w2zArd/iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools)
-- VSCode 源码目录：`iXenaUnrealTools-VSCode`
-- UE 源码目录：`iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge`
-- 手动构建脚本：`iXenaUnrealTools-UnrealPlugin/Tools`
+从 Marketplace 安装，或在 VS Code 扩展视图的菜单中选择 **从 VSIX 安装**，选中下载的安装包，然后重新加载窗口。打开 UE 生成的 `.code-workspace` 或包含 `.uproject` 的项目目录。
 
-## 安装 VSCode 扩展
+左侧 **iXena Unreal** 提供编辑器通讯、本地化、源码分栏、Targets / Modules、日志和工具入口。状态栏提供构建配置、引擎、构建/停止与调试。旧扩展 ID 的安装不属于同一个扩展；如果仍有重复的按钮，请停用旧扩展。
 
-在 VSCode 的扩展视图选择 **从 VSIX 安装**，安装 `ixena-unreal-tools-0.6.2.vsix`，然后重新加载窗口。
+## 本地化工作台
 
-本版发布者为 `ixena-unreal-tools`，扩展 ID 为 **`ixena-unreal-tools.ixena-unreal-tools`**。旧本地版 ID 为 `ixena-local.ixena-unreal-tools`，不会被同 ID 升级覆盖；请停用或卸载旧版，避免两套按钮和命令同时激活。若旧版注册过 Windows 系统菜单，先用旧版移除菜单，再安装本版并重新注册。
+进入 **iXena Unreal → 本地化 / 翻译 → 打开本地化工作台**。也可以右键 `.po`、`.uproject`、`.uplugin`，或者在命令面板搜索 **iXenaUnrealTools: 本地化**。
 
-[发布者管理页](https://marketplace.visualstudio.com/manage/publishers/ixena-unreal-tools)用于上传和管理扩展，**不是公开扩展详情页**。[预期公开地址](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools)按当前 publisher/name 组成；本交付没有验证它已发布，也没有代为推送仓库或发布 Marketplace / GitHub Release。
-
-## 初始化连接
-
-打开左侧 **iXena Unreal → 编辑器通讯 → 连接与初始化 → 初始化引擎插件…**。快捷操作和命令面板也提供同一入口。
-
-| 选择 | 初始化会做什么 | 你需要准备什么 |
-| --- | --- | --- |
-| iXena 插件 | 保存通讯方式并打开上面的 GitHub 仓库 | 下载源码或对应引擎的构建产物，手动放置、编译、启用并重开 UE |
-| Epic Unreal MCP | 输入 IP、端口和路径，保存通过校验的客户端地址 | 在对应 UE 中开启官方 Unreal MCP；热更新需要 Live Coding 工具集 |
-
-初始化不会修改 `.uproject` 的插件启用项，不会后台启动 UAT，也不会创建项目插件目录。完成手动准备后，选择正确的项目/引擎，再点击 **检查连接 / 插件状态**。
-
-### 插件方式
-
-下载仓库中的整个 `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge` 文件夹，保留 `.uplugin` 和 Source 结构。保存并关闭 UE，再放到以下任一位置；同一项目不要同时加载两份同名插件。
-
-| 安装范围 | 示例位置 |
+| 功能 | 用法 |
 | --- | --- |
-| 项目 | `D:\Develop\UnrealEngine\UE5Test\Plugins\iXenaUnrealBridge` |
-| 引擎 | `D:\Engines\UE_5.9\Engine\Plugins\iXena\iXenaUnrealBridge` |
+| 自动发现 | 打开工作台时扫描当前工作区 UE 项目及其 `Plugins` 下的目标；识别 `Config/Localization` 中的配置和 `Content/Localization` 下的 PO，文件变化后刷新 |
+| 目标与语言选择 | 按主项目或项目插件选择目标，再切换 `en`、`zh-Hans`、`ja` 等语言 |
+| 翻译表格 | 查看文本身份、源文、译文、复数形式、源文件引用和注释；直接编辑译文 |
+| 搜索与筛选 | 搜索当前目标、当前语言的原文、译文、身份和引用；筛选未翻译、需复核、本次修改 |
+| 进度与检查 | 显示总数、已翻译、未翻译、需复核数量；提示 fuzzy 标记、`{Name}` 格式参数和换行差异 |
+| 导入 | 导入 PO 或本扩展导出的 CSV / JSON；按相同身份、源文和复数信息匹配，预览匹配数量后应用 |
+| 导出 | 导出当前语言，或勾选“所有语言”导出当前目标的全部 PO / CSV / JSON；导出不受表格搜索、筛选或分页影响 |
+| 自动导出 | 启用“保存后自动导出”，保存已发现的 PO 时生成三种格式的独立副本 |
+| UE 流程 | 执行采集并导出、导入并编译，或展开高级选项单独执行步骤、打开 INI |
+| 草稿与冲突 | 草稿在工作区中保留；检测外部版本变化，保护磁盘译文；未保存时先保存或放弃再切换目标 |
 
-使用对应引擎的 C++ 工具链构建 Development Editor，在 **UE Plugins → iXena** 分类启用 **iXena Unreal Bridge**，按提示重开编辑器。也可先运行 `Tools` 脚本生成插件包，再复制完整输出目录。`.uplugin`、模块清单和其他必需元数据都要保留，不能只复制一个 DLL。
+本地化工作台直接使用选定引擎的 Commandlet，**不需要安装 iXena Unreal Bridge，也不需要开启 MCP**。离线查看、编辑和导出已有 PO 无需启动 UE；采集蓝图、UMG、地图、字符串表资产，以及导入/编译资源，需要可运行的对应 UE Editor 引擎。
 
-在仓库的 `iXenaUnrealTools-UnrealPlugin` 目录运行以下示例。输出父目录需提前存在，目标输出目录必须不存在或为空，并且位于引擎和插件源码之外。
+### 已经使用 UE Localization Dashboard
 
-```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\Tools\Build-Plugin.ps1 `
-  -EngineRoot "D:\Engines\UE_5.9" `
-  -Package "D:\Builds\iXenaUnrealBridge-UE5.9" `
-  -Language zh-CN
+1. 在 UE 中设置目标与文化，并执行所需的 Gather、Export、Import、Compile 操作，以生成对应的 `Config/Localization/*.ini`。
+2. 打开 VS Code 工作台并扫描，选择目标和语言。
+3. 点击 **采集并导出** 获取新增文本。
+4. 修改译文后点击 **保存翻译**，或使用 `Ctrl+S` / `⌘+S`。
+5. 点击 **导入并编译**，由 UE 导入译文并生成 `.locres`。
+
+已有目标保持原配置。添加语言请在 UE Dashboard 中完成并重新生成配置，再回到 VS Code 刷新。Dashboard 设置与 Commandlet INI 是两种配置结构；直接改 INI 不会同步改变 Dashboard。
+
+### 从 VS Code 新建目标
+
+1. 点击 **新建目标**，选择主项目或项目插件。
+2. 输入目标名，例如 `Game`；指定与源文一致的源语言，例如 `en`。
+3. 输入目标语言，例如 `en,zh-Hans,ja`。
+4. 点击 **采集并导出**，然后编辑并保存译文。
+5. 使用 **添加语言** 扩充此目标的语言，再次采集并导出。
+
+扩展在选定范围内创建独立的 `Config/Localization/iXena.<目标>.<操作>.ini` 和 `<目标>.ixena-loc.json`。配置可直接在源码视图调整；每次操作仍交给 UE 执行。该目标不会自动登记到 UE Dashboard。不要为同一份本地化数据建立两个配置所有者。
+
+新建项目目标还需要设置本地化加载路径；插件目标需要相应的 `LocalizationTargets` / LoadingPolicy。最终打包还需要配置 **Localizations to Package** 与 **Internationalization Support**。生成 `.locres` 和让游戏加载该资源是两个步骤。
+
+### 自动导出与日志
+
+在工作台勾选自动导出，或合并下面的设置：
+
+```jsonc
+{
+  "settings": {
+    "iXenaUnrealTools.localization.autoExportOnSave": true
+  }
+}
 ```
 
-```bash
-bash ./Tools/Build-Plugin.sh \
-  --engine "/opt/UnrealEngine/UE_5.9" \
-  --package "/tmp/iXenaUnrealBridge-UE5.9" \
-  --language en
-```
+副本写入项目下的 `Saved/iXenaUnrealTools/LocalizationExports/<范围>/<目标>-<标识>/<语言>/`，包括 `.po`、`.csv`、`.json`。导出目录包含目标标识，避免同名项目或插件互相覆盖。此开关不会后台自动采集、编译或翻译。
 
-脚本实时显示选定主机引擎的 UAT / UBT 输出，返回实际退出码并检查产物，**只构建、不安装**。默认移除 PDB/dSYM；需要保留时用 `-KeepSymbols` / `--keep-symbols`。Windows 路径中的 CMD 元字符会被明确拒绝。不同引擎、系统和架构需要分别构建。
+Commandlet 实时输出复用现有任务终端；点击停止优先发送 Ctrl+C。每次操作的独立日志和操作前 PO 副本保存在 `Saved/iXenaUnrealTools/LocalizationRuns/`。任一步骤失败后不执行后续步骤；已有 PO 会先被纳入导入流程，避免导出覆盖尚未导入的译文。
 
-### MCP 方式
+### 文本与格式范围
 
-默认输入为 `127.0.0.1`、`8000`、`/mcp`，组合成 `http://127.0.0.1:8000/mcp`。向导接受明确的 IPv4、IPv6 或 localhost；取消输入不会覆盖之前的配置。
+- 新文本由 UE GatherText 收集，覆盖配置范围内的 `LOCTEXT` / `NSLOCTEXT`、可本地化 `FText` 与资产文本。普通 `FString`、硬编码 UI 文本、关闭本地化的文本不会因此自动变成可翻译文本。
+- 自动发现范围是工作区项目及其项目插件；不会递归扫描整套引擎、Engine 插件或链接到项目外的目录。特殊路径、混合流程和歧义配置会显示提示。
+- PO 是 UE 的标准翻译交换格式。CSV / JSON 使用扩展自己的无损交换结构，导回本扩展后再通过 UE Import/Compile 生效。
+- UTF-8 PO 支持 BOM、CRLF、转义、多行、复数和注释。Crowdin 身份格式先按只读展示，可打开原始 PO 编辑。
+- 此工作台管理文本翻译，不替代本地化音频、配音导入、资产替换和区域化日期/数字功能，也不调用机器翻译服务。
 
-填写 IP/端口只设置客户端连接地址，不会改变 UE 的监听地址。官方服务默认面向本机；填写其他 IP 并不自动获得跨机器工作能力。服务仍须能访问并返回与当前选择完全匹配的项目/引擎身份；本版不提供远端与本地路径映射。第三方同名 MCP 插件不保证具有相同工具和元数据。
+## 其他开发功能
 
-插件方式的命令和性能监测不依赖 MCP。选用 MCP 热更新后，仍可通过已经加载的 iXena Bridge 使用这些功能。
-
-## 面板分类与语言
-
-通讯面板将操作分为四组，连接状态单独置顶：
-
-| 分组 | 内容 |
+| 功能 | 用法 |
 | --- | --- |
-| 连接与初始化 | 初始化、项目/引擎选择、通讯方式、连接检查；MCP 方式显示地址 |
-| 编译与热更新 | Live Coding、本机 Editor 完整编译 |
-| 运行与调试 | CPU/内存监测、Unreal Insights、命令/CVar |
-| 日志与帮助 | 实时输出、上次热更新日志、仓库说明 |
+| 构建 / 停止 / 调试 | 读取已有 workspace tasks 和 launch；选择配置后构建或调试；同一项目复用任务终端 |
+| 多引擎切换 | 使用状态栏引擎选择；可在 `iXenaUnrealTools.engineRoots` 配置多个引擎 |
+| UHT / IntelliSense | 单独刷新 UHT 与语言服务；模块或反射结构变动后按需完整构建 |
+| C++ 类向导 | 从面板或右键创建类，选择父类、模块、Public/Private 和子目录，生成带中文注释的头文件 |
+| `.h/.cpp` 切换 | 通过资源树或编辑器右键切换同一模块中的配对文件 |
+| 源码分栏 | 配置 `iXenaUnrealTools.explorer.panes` 或兼容的 `multiExplorer.panes`，按主项目/插件浏览 Public、Private 等目录 |
+| 模块依赖 | 可视化编辑 Build.cs 中可识别的静态 Public/Private 依赖，复杂 C# 条件代码保留手工修改 |
+| 描述文件 | 可视化编辑 `.uproject` / `.uplugin`，保留未知字段并支持源码视图 |
+| 编辑器通讯 | 可选 iXena Bridge 或 Epic Unreal MCP，支持 Live Coding、连接状态与日志 |
+| 命令与性能 | 搜索 UE 注册的命令/CVar、查看帮助并发送；查看 CPU/内存和打开 Unreal Insights |
+| Windows 系统菜单 | 显式注册或移除 `.uproject` / `.uplugin` 的当前用户右键菜单 |
 
-支持简体中文与英文。动态界面默认跟随 VSCode，可用 **界面语言** 命令或 `iXenaUnrealTools.language` 设置 `auto`、`zh-CN`、`en`。状态栏、侧栏和动态面板更新语言；Webview 切换会保留未提交输入和性能历史。
+## 可选的 UE 通讯插件
 
-**命令面板、右键菜单和静态视图标题由 VSCode 的显示语言决定。** 手动语言设置只控制扩展的动态界面；更改 VSCode 显示语言时按 VSCode 要求重启。UE 原生浮动面板独立提供 Auto / English / 简体中文，Auto 跟随 UE 界面语言。
+点击 **初始化引擎插件** 选择通讯方式。插件方式打开仓库，下载 `iXenaUnrealTools-UnrealPlugin/iXenaUnrealBridge`，关闭 UE 后放入以下任一目录：
 
-源代码、技术标识符、引擎原生日志、用户命名不会被自动翻译。类向导生成的头文件注释按设计保持中文。
+- 项目：`D:\Develop\UnrealEngine\UE5Test\Plugins\iXenaUnrealBridge`
+- 引擎：`D:\Engines\UE_5.9\Engine\Plugins\iXena\iXenaUnrealBridge`
 
-## 主要功能
+使用匹配引擎的 C++ 工具链构建，或使用 `iXenaUnrealTools-UnrealPlugin/Tools` 中的 Windows / macOS / Linux 脚本打包，然后在 **UE Plugins → iXena** 中启用并重开 UE。保留完整插件目录和元数据。初始化入口本身不自动下载或安装。
 
-| 功能 | 使用说明 |
-| --- | --- |
-| 构建/停止/调试 | 读取已有 `.code-workspace` / `tasks` / `launch`，选择配置后构建；调试复用匹配的 launch。复杂任务可用“运行原始 VSCode 任务” |
-| 构建终端 | 同一项目尽量复用终端；普通任务停止优先 Ctrl+C，必要时回退 VSCode 任务终止；尽量归档 UBT 日志 |
-| 多引擎 | 从任务和设置发现引擎；切换工具链不自动改项目 EngineAssociation，launch 路径不匹配时需重新生成工程 |
-| UHT / IntelliSense | 提供独立 UHT 刷新和语言服务刷新；旧引擎能力不足时需用常规完整构建 |
-| 源码分栏 | 选择主项目/插件范围，按 Public、Private 等查看；可复用 `multiExplorer.panes`；未配置分栏则隐藏 |
-| `.h/.cpp` 切换 | 编辑器或资源树右键，按同名文件与模块路径配对；多候选让用户选择 |
-| 新建 C++ 类 | 20 个内置父类模板及自定义父类，选择模块、命名、Public/Private、子目录并预览；不覆盖文件 |
-| Build.cs 依赖 | 可视化修改可识别的静态 Public/Private 依赖；复杂条件逻辑保留人工编辑 |
-| `.uproject/.uplugin` | 可视化编辑声明与插件引用，保留未知字段；写入文档缓冲区，由用户保存 |
-| UE 命令/CVar | 搜索实际注册项，查看帮助与当前值，确认完整命令和目标后发送 |
-| CPU/内存 | 采样当前 UE Editor 进程，显示最多 120 个样本；断点/忙碌时保留最后读数并标记过期 |
-| Unreal Insights | 打开实例所属引擎的工具；不会自动开始 Trace 录制 |
-| Windows 系统菜单 | 显式注册/移除当前用户 `.uproject/.uplugin` 菜单；Windows 11 位于“显示更多选项” |
+MCP 方式填写已启用服务的 IP、端口和路径。默认示例为 `127.0.0.1:8000/mcp`；服务能力由 UE 版本和所启用的工具集决定。Live Coding 的平台能力与对应引擎一致；本地化 Commandlet 入口独立支持 Windows、macOS、Linux 的编辑器路径。
 
-类向导列出所需模块依赖，生成后可打开 Build.cs 编辑器补齐。新增反射类、修改模块或 Build.cs/Target.cs 后，应使用完整构建并按需要重开编辑器。
+## 工作区设置示例
 
-UE 插件启用后，还可通过 **UE 顶部 iXena → 打开工具面板** 使用原生可移动浮动窗口，查看状态、命令和性能数值。
-
-## 热更新、日志与平台边界
-
-Windows 智能编译只有在确认 Editor 与项目、引擎匹配时才发送 Live Coding；确认没有匹配的 Editor 时使用原有 UBT。连接失败、编译失败或结果不确定不会自动再提交普通 UBT。协议 1 明确兼容 Bridge 0.5.0 和 0.6.1。
-
-插件热更新输出来自实际捕获的 UE GLog，独立 Live Coding Console **不保证转发所有编译器行**。MCP 进度取决于服务端通知。可识别的绝对文件诊断进入专属 Problems；等待超时不代表 UE 已停止编译，本版没有可靠的 Live Coding 取消入口。
-
-macOS/Linux 提供通讯插件源码、手动构建脚本、命令/性能面板，以及本机完整编译入口；本版 Live Coding 在这些平台返回不可用。原有 Windows Tasks 自动转换和系统菜单不代表已移植为所有平台功能。
-
-当前交付没有真实 UE C++ 工具链和 Windows/macOS GUI 验收，旧 UE5 也没有逐版本实编译矩阵。C++ 源码已修正 `FCompileOutput` 构造参数遮蔽问题，使用 `InCompileLogPath`，但该静态修复不能代替目标引擎构建结果。完整验证范围见 [VALIDATION.md](VALIDATION.md)。
-
-## 工作区示例
-
-以下是可合并到已有 `.code-workspace` 的示例；保留你原有 UE 生成的 tasks 和 launch。
+合并到现有 `.code-workspace`，保留原有 tasks 与 launch：
 
 ```jsonc
 {
@@ -132,7 +121,7 @@ macOS/Linux 提供通讯插件源码、手动构建脚本、命令/性能面板�
   "settings": {
     "iXenaUnrealTools.language": "auto",
     "iXenaUnrealTools.engineRoots": ["D:\\Engines\\UE_5.9"],
-    "iXenaUnrealTools.performance.autoStartDebug": true,
+    "iXenaUnrealTools.localization.autoExportOnSave": true,
     "iXenaUnrealTools.explorer.panes": [
       { "label": "Public", "roots": ["${workspaceFolder:UE5Test}/Source/UE5Test/Public"] },
       { "label": "Private", "roots": ["${workspaceFolder:UE5Test}/Source/UE5Test/Private"] }
@@ -141,24 +130,24 @@ macOS/Linux 提供通讯插件源码、手动构建脚本、命令/性能面板�
 }
 ```
 
-## 开发与许可证
+动态界面支持 `auto`、`zh-CN` 和 `en`。命令标题与右键菜单跟随 VS Code 显示语言；原始标识符、用户数据和引擎日志保留原文。
+
+## 预览
+
+![项目与插件描述编辑器](https://raw.githubusercontent.com/w2zArd/iXenaUnrealTools/main/Screenshots/001.png)
+
+![模块依赖编辑器](https://raw.githubusercontent.com/w2zArd/iXenaUnrealTools/main/Screenshots/002.png)
+
+![UE 性能监测](https://raw.githubusercontent.com/w2zArd/iXenaUnrealTools/main/Screenshots/003.png)
+
+## 从源码构建
 
 在 `iXenaUnrealTools-VSCode` 目录运行：
 
 ```bash
 npm ci
-npm test
-npm --prefix test/ui ci
-npm run test:ui
+npm run compile
 npm run package
 ```
 
-`npm run test:host` 另需有效桌面/显示服务。开发依赖不会包含在 VSIX 中。
-
-本项目使用 [MIT License](LICENSE)，版权署名为黄小宇。分发源码或软件副本时保留版权和许可声明；Unreal Engine 与其他依赖仍适用各自许可。
-
-### 0.6.1 补充：多语言与连接诊断
-
-常用 CVar/控制台命令在中文环境显示中文用途概览及 UE 原始英文帮助；未收录条目保留英文，避免误译。英文界面原样显示 UE 帮助。中文关键词匹配需新版通讯插件，变更语言不会改写 CVar 名称、值或引擎原始日志。
-
-检查连接只进行受限的状态读取和 ping，即使后台存在 UBT 任务也可操作；只在收到 UE 响应后显示已连接。桥接插件不再注册第二个顶级 iXena 菜单，通过 QtQuickUI 现有菜单、Window 菜单或工具栏打开。替换已加载的 DLL 前请关闭 UE Editor。
+源码和软件采用 [MIT](LICENSE) 许可证。Unreal Engine 及其他依赖适用各自许可。

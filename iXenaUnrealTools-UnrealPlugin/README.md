@@ -1,13 +1,5 @@
 # iXenaUnrealTools · Unreal Plugin 0.6.2
 
-## 0.6.2：UE5.9 C2039 编译修正
-
-`iXenaBridgeConsoleHelp.cpp` 两处 `Pair.Key.ToLower()` 已改为 `FString(*Pair.Key).ToLower()`，适配 UE5.9 的 `TSharedString<TCHAR>` JSON 对象键。此改动已经由用户确认能编译。只升级 VSCode 连接/状态逻辑时，可以继续使用现有 0.6.1 插件 DLL。
-
-[English](README.en.md) · 作者：**黄小宇** · **MIT License**
-
-这是 [iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools) 仓库中的 UE Editor 通讯插件源码。VSCode 的“初始化引擎插件”入口负责选择连接方式并打开仓库；插件由用户下载、放置和编译。这个目录可单独使用，不需要 Node、VSCode 进程或 MCP 服务来构建。
-
 ## 目录和命名
 
 | 目录 / 文件 | 用途 |
@@ -113,8 +105,3 @@ python3 -m unittest discover -s Tests -v
 
 文件通讯和性能字段详见 [协议文档](iXenaUnrealBridge/PROTOCOL.md)。代码采用 [MIT License](LICENSE)，版权署名为 **黄小宇**。分发时保留许可证及版权声明；Unreal Engine 本身仍遵循 Epic 的许可条款。
 
-### 0.6.1 补充：多语言与连接诊断
-
-常用 CVar/控制台命令在中文环境显示中文用途概览及 UE 原始英文帮助；未收录条目保留英文，避免误译。英文界面原样显示 UE 帮助。中文关键词匹配需新版通讯插件，变更语言不会改写 CVar 名称、值或引擎原始日志。
-
-检查连接只进行受限的状态读取和 ping，即使后台存在 UBT 任务也可操作；只在收到 UE 响应后显示已连接。桥接插件不再注册第二个顶级 iXena 菜单，通过 QtQuickUI 现有菜单、Window 菜单或工具栏打开。替换已加载的 DLL 前请关闭 UE Editor。

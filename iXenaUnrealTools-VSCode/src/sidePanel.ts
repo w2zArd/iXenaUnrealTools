@@ -348,6 +348,7 @@ export class UnrealSidePanel implements vscode.Disposable {
         this.action(t("开始调试"), 'debug', 'debug-start')
       ], 'tools'),
       this.group(t("Unreal Engine 工具"), async () => [
+        this.action(tr("本地化工作台", "Localization Workbench"), 'openLocalization', 'globe'),
         this.action(tr("初始化引擎插件", "Initialize Engine Plugin"), 'initializeEnginePlugin', 'extensions'),
         this.action(t("新建 Unreal C++ 类"), 'newClass', 'new-file'),
         this.action(t("启动 Unreal Editor"), 'launchEditor', 'play'),

@@ -76,7 +76,7 @@ test('Explorer rejects relative, device, reserved, ADS and malformed descriptor 
 });
 
 test('Explorer registry ownership stays limited to current-user descriptor verbs and separates VSCode editions', () => {
-  assert.equal(EXPLORER_EXTENSION_ID, 'ixena-unreal-tools.ixena-unreal-tools');
+  assert.equal(EXPLORER_EXTENSION_ID, 'ixena-unreal-tools.ixena-unreal-tools-vscode');
   assert.equal(explorerRegistryKeyName('vscode'), 'iXenaUnrealTools.vscode');
   assert.equal(explorerRegistryKeyName('vscode-insiders'), 'iXenaUnrealTools.vscode-insiders');
   const stable = explorerRegistryPaths('vscode');

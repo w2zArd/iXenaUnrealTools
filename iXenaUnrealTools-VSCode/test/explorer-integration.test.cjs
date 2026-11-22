@@ -53,7 +53,7 @@ function loadIntegration(options = {}) {
 }
 
 function explorerUri(action, file, overrides = {}) {
-  return { scheme: 'vscode', authority: 'ixena-unreal-tools.ixena-unreal-tools', path: '/explorer', fragment: '',
+  return { scheme: 'vscode', authority: 'ixena-unreal-tools.ixena-unreal-tools-vscode', path: '/explorer', fragment: '',
     query: `payload=${Buffer.from(JSON.stringify({ version: 1, action, file }), 'utf8').toString('base64url')}`,
     ...overrides };
 }
@@ -161,7 +161,7 @@ test('Explorer registration copies stable bridge files and uses fixed Install/Re
   const raw = await fs.readFile(path.join(folder, 'explorer-config.json'), 'utf8');
   assert.equal(raw.charCodeAt(0), 0xfeff, 'PowerShell 5.1 UTF-8 BOM');
   const config = JSON.parse(raw.slice(1));
-  assert.equal(config.extensionId, 'ixena-unreal-tools.ixena-unreal-tools');
+  assert.equal(config.extensionId, 'ixena-unreal-tools.ixena-unreal-tools-vscode');
   assert.equal(config.uriScheme, 'vscode');
   assert.equal(config.bridgePath, path.join(folder, 'ExplorerBridge.ps1'));
   assert.equal(config.codeExe, String.raw`C:\Apps\VS Code\Code.exe`);

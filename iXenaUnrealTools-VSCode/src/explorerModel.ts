@@ -3,7 +3,7 @@ import * as path from 'node:path';
 import { TextDecoder } from 'node:util';
 
 /** Explorer 协议只传递描述文件和固定动作，不接受任意命令。 */
-export const EXPLORER_EXTENSION_ID = 'ixena-unreal-tools.ixena-unreal-tools';
+export const EXPLORER_EXTENSION_ID = 'ixena-unreal-tools.ixena-unreal-tools-vscode';
 export const EXPLORER_URI_PATH = '/explorer';
 export const EXPLORER_CONFIG_FILENAME = 'explorer-config.json';
 export const EXPLORER_MAX_QUERY_LENGTH = 24576;

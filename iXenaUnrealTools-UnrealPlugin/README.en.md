@@ -1,13 +1,5 @@
 # iXenaUnrealTools · Unreal Plugin 0.6.2
 
-## 0.6.2: UE5.9 compiler compatibility
-
-`iXenaBridgeConsoleHelp.cpp` converts both JSON object keys with `FString(*Pair.Key).ToLower()` to support `TSharedString<TCHAR>` in UE5.9. The user verified that correction compiles. 0.6.1 binaries remain wire-protocol compatible with the updated VSCode client.
-
-[简体中文](README.md) · Author: **黄小宇** · **MIT License**
-
-This directory contains the UE Editor bridge for [iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools). The VSCode **Initialize engine plugin** action selects a transport and opens the repository. Users download, place and compile the UE plugin themselves. Building this component does not require Node, a VSCode process or an MCP service.
-
 ## Layout and identity
 
 | Path | Purpose |
@@ -110,6 +102,3 @@ python3 -m unittest discover -s Tests -v
 
 See the [file protocol](iXenaUnrealBridge/PROTOCOL.md) and [MIT License](LICENSE). Copyright attribution is **黄小宇**; retain the copyright and license when distributing. Unreal Engine itself remains subject to Epic's license.
 
-### 0.6.1: bilingual console help, connection and menu fixes
-
-Chinese mode adds curated meanings for common CVars while retaining the untouched native UE help, including all parameters. English mode uses the original help. Unknown entries are not machine-translated. Chinese keyword search requires the matching 0.6.1 bridge. Connection checks are not blocked by ongoing UBT tasks and report stale or mismatched bridge files. The bridge extends QtQuickUI’s existing iXena submenu and also provides Window/toolbar access. Restart UE after replacing the native module.

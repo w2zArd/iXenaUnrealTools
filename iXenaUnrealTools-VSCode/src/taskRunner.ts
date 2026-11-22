@@ -50,7 +50,7 @@ interface PendingStep {
   reject: (error: unknown) => void;
 }
 
-const OWNER = 'ixena-unreal-tools.ixena-unreal-tools';
+const OWNER = 'ixena-unreal-tools.ixena-unreal-tools-vscode';
 // Ctrl+C 不会立即杀死任务终端；如果进程完全不响应，则保底终止，防止停止按钮永久卡住。
 const TERMINAL_LOOKUP_TIMEOUT_MS = 1800;
 const INTERRUPT_GRACE_MS = 10000;

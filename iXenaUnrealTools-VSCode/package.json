@@ -1,8 +1,8 @@
 {
-  "name": "ixena-unreal-tools",
-  "displayName": "iXenaUnrealTools",
+  "name": "ixena-unreal-tools-vscode",
+  "displayName": "iXena Unreal Tools for VS Code",
   "description": "%extension.description%",
-  "version": "0.6.2",
+  "version": "0.7.0",
   "publisher": "ixena-unreal-tools",
   "license": "MIT",
   "engines": {
@@ -27,7 +27,9 @@
     "uplugin",
     "Explorer",
     "localization",
-    "MCP"
+    "MCP",
+    "translation",
+    "PO"
   ],
   "extensionKind": [
     "workspace"
@@ -296,6 +298,36 @@
         "command": "iXenaUnrealTools.selectLanguage",
         "title": "%command.selectLanguage%",
         "icon": "$(globe)"
+      },
+      {
+        "command": "iXenaUnrealTools.openLocalization",
+        "title": "%command.openLocalization%",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "iXenaUnrealTools.refreshLocalization",
+        "title": "%command.refreshLocalization%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "iXenaUnrealTools.newLocalizationTarget",
+        "title": "%command.newLocalizationTarget%",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "iXenaUnrealTools.gatherLocalization",
+        "title": "%command.gatherLocalization%",
+        "icon": "$(cloud-download)"
+      },
+      {
+        "command": "iXenaUnrealTools.compileLocalization",
+        "title": "%command.compileLocalization%",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "iXenaUnrealTools.stopLocalization",
+        "title": "%command.stopLocalization%",
+        "icon": "$(debug-stop)"
       }
     ],
     "taskDefinitions": [
@@ -502,6 +534,12 @@
             "%config.iXenaUnrealTools.language.enumDescriptions.2%"
           ],
           "description": "%config.iXenaUnrealTools.language.description%"
+        },
+        "iXenaUnrealTools.localization.autoExportOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "%configuration.localization.autoExportOnSave%",
+          "scope": "window"
         }
       }
     },
@@ -567,6 +605,21 @@
           "command": "iXenaUnrealTools.newClass",
           "when": "view == ixenaUnrealTools.explorer",
           "group": "navigation@3"
+        },
+        {
+          "command": "iXenaUnrealTools.openLocalization",
+          "when": "view == ixenaUnrealTools.localization",
+          "group": "navigation@0"
+        },
+        {
+          "command": "iXenaUnrealTools.refreshLocalization",
+          "when": "view == ixenaUnrealTools.localization",
+          "group": "navigation@1"
+        },
+        {
+          "command": "iXenaUnrealTools.newLocalizationTarget",
+          "when": "view == ixenaUnrealTools.localization",
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [
@@ -611,6 +664,11 @@
           "command": "iXenaUnrealTools.newClass",
           "when": "resourceScheme == file",
           "group": "2_workspace@8"
+        },
+        {
+          "command": "iXenaUnrealTools.openLocalization",
+          "when": "resourceScheme == file && (resourceExtname == .po || resourceExtname == .uproject || resourceExtname == .uplugin)",
+          "group": "ixenaLocalization@1"
         }
       ],
       "editor/title": [
@@ -623,6 +681,11 @@
           "command": "iXenaUnrealTools.editDescriptor",
           "when": "resourceExtname =~ /\\.(uproject|uplugin)$/i",
           "group": "navigation@12"
+        },
+        {
+          "command": "iXenaUnrealTools.openLocalization",
+          "when": "resourceExtname == .po",
+          "group": "navigation@5"
         }
       ],
       "editor/context": [
@@ -659,6 +722,10 @@
           "id": "ixenaUnrealTools.explorer",
           "name": "%view.ixenaUnrealTools.explorer%",
           "when": "iXenaUnrealTools.explorerConfigured"
+        },
+        {
+          "id": "ixenaUnrealTools.localization",
+          "name": "%view.ixenaUnrealTools.localization%"
         },
         {
           "id": "ixenaUnrealTools.rules",

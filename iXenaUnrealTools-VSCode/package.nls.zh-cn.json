@@ -1,5 +1,5 @@
 {
-  "extension.description": "Unreal 工具箱：插件/MCP 初始化、分组侧栏、中英文界面、Live Coding、CPU/内存监测、C++ 类向导和工程编辑。",
+  "extension.description": "Unreal Engine 工具：构建、热更新、PO 本地化工作台、翻译自动导出、可视化模块/描述文件编辑与 CPU/内存监测。",
   "workspace.trustDescription": "编译和调试会执行工作区代码，请先信任此工作区。",
   "command.selectConfiguration": "iXenaUnrealTools: 选择构建配置",
   "command.build": "iXenaUnrealTools: 编译",
@@ -86,5 +86,13 @@
   "view.ixenaUnrealTools.rules": "工程描述 / Targets / Modules",
   "view.ixenaUnrealTools.logs": "UBT / 项目日志",
   "view.ixenaUnrealTools.actions": "快捷操作",
-  "customEditor.iXenaUnrealTools.descriptorEditor": "iXena Unreal 项目 / 插件编辑器"
+  "customEditor.iXenaUnrealTools.descriptorEditor": "iXena Unreal 项目 / 插件编辑器",
+  "command.openLocalization": "iXenaUnrealTools: 打开本地化工作台",
+  "command.refreshLocalization": "iXenaUnrealTools: 扫描本地化目标",
+  "command.newLocalizationTarget": "iXenaUnrealTools: 新建本地化目标",
+  "command.gatherLocalization": "iXenaUnrealTools: 采集并导出本地化文本",
+  "command.compileLocalization": "iXenaUnrealTools: 导入并编译本地化翻译",
+  "command.stopLocalization": "iXenaUnrealTools: 停止本地化任务",
+  "view.ixenaUnrealTools.localization": "本地化 / 翻译",
+  "configuration.localization.autoExportOnSave": "保存已发现的 PO 时，将 PO、CSV、JSON 副本自动导出到项目 Saved/iXenaUnrealTools/LocalizationExports。不会自动运行引擎。"
 }

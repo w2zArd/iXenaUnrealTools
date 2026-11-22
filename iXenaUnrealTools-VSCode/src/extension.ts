@@ -18,6 +18,7 @@ import { decideBuild, explainLiveCodingResult, BuildMode } from './liveCoding';
 import { probeWindowsEditor } from './editorProcesses';
 import { EditorCommunication } from './editorCommunication';
 import { createUnrealClass } from './classWizard';
+import { LocalizationManager } from './localizationManager';
 import { resolveBuildTool, BuildToolInvocation, DotnetSelectionCancelledError } from './dotnetResolver';
 import { discoverEngines, inspectEngine, readEngineVersion, readProjectEngineAssociation,
   engineAssociationMismatch, EngineInstallation, isUhtRelevantHeader, pathKey, optionalPathKey, chooseEngineRoot, uhtArguments, versionName } from './engineSupport';
@@ -71,6 +72,7 @@ export class BuildController implements vscode.Disposable {
   private readonly sidePanel: UnrealSidePanel;
   private readonly explorerIntegration: ExplorerIntegration;
   private readonly communication: EditorCommunication;
+  private readonly localization: LocalizationManager;
 
   constructor(private readonly context: vscode.ExtensionContext) {
     const config = vscode.workspace.getConfiguration(PREFIX);
@@ -99,6 +101,22 @@ export class BuildController implements vscode.Disposable {
       changed: () => this.updateBar(), log: message => this.log(message)
     });
     this.subscriptions.push(this.communication);
+    this.localization = new LocalizationManager(context, {
+      projects: () => this.sidePanel.projects.map(project => project.projectPath),
+      preferredProject: () => this.selection?.projectPath,
+      engineForProject: projectPath => {
+        const configuration = this.selection?.projectPath === projectPath ? this.selection
+          : this.catalogue.configurations.find(item => item.projectPath === projectPath);
+        try { return configuration ? this.currentEngineRoot(configuration) : undefined; }
+        catch { return undefined; }
+      },
+      engines: () => [...this.engineChoices.map(engine => engine.root),
+        ...(vscode.workspace.getConfiguration(PREFIX).get<string[]>('engineRoots', []) ?? [])],
+      buildBusy: () => this.runner.isBusy || this.debugStarting || this.communication.isBusy,
+      runTask: (label, steps) => this.runner.run(label, async token => token.isCancellationRequested ? [] : steps),
+      stopTask: () => this.runner.cancel(), log: message => this.log(message)
+    });
+    this.subscriptions.push(this.localization);
     this.explorerIntegration = new ExplorerIntegration(context, {
       output: message => this.log(message), openDescriptor: uri => openDescriptor(uri)
     });
@@ -178,7 +196,7 @@ export class BuildController implements vscode.Disposable {
 
   async initialize(): Promise<void> {
     this.lastBuildLogPath = this.context.workspaceState.get<string>('lastBuildLogPath');
-    this.log(tr("iXenaUnrealTools 0.6.0 已激活：插件 / MCP 初始化、多语言、实时编译输出、新建 Unreal C++ 类和 UE 命令面板。", "iXenaUnrealTools 0.6.0 activated: plugin / MCP setup, localization, build output, Unreal C++ class wizard and UE console tools."));
+    this.log(tr("iXenaUnrealTools 0.7.0 已激活：UE 本地化工作台、PO 翻译编辑、自动导出与原有 Unreal 开发工具。", "iXenaUnrealTools 0.7.0 activated: UE Localization Workbench, PO translation editing, automatic exports and Unreal development tools."));
     try {
       await this.refresh(false);
     } catch (error) {

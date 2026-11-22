@@ -1,5 +1,5 @@
 {
-  "extension.description": "Unreal tools: plugin/MCP setup, grouped views, English/Chinese UI, Live Coding, CPU/memory monitoring, C++ class creation, and project editing.",
+  "extension.description": "Unreal Engine tools: builds, Live Coding, PO localization workbench, automatic translation exports, visual module/descriptor editing and CPU/memory monitoring.",
   "workspace.trustDescription": "Build and debug operations execute workspace code. Trust this workspace first.",
   "command.selectConfiguration": "iXenaUnrealTools: Select Build Configuration",
   "command.build": "iXenaUnrealTools: Build",
@@ -86,5 +86,13 @@
   "view.ixenaUnrealTools.rules": "Descriptors / Targets / Modules",
   "view.ixenaUnrealTools.logs": "UBT / Project Logs",
   "view.ixenaUnrealTools.actions": "Quick Actions",
-  "customEditor.iXenaUnrealTools.descriptorEditor": "iXena Unreal Project / Plugin Editor"
+  "customEditor.iXenaUnrealTools.descriptorEditor": "iXena Unreal Project / Plugin Editor",
+  "command.openLocalization": "iXenaUnrealTools: Open Localization Workbench",
+  "command.refreshLocalization": "iXenaUnrealTools: Scan Localization Targets",
+  "command.newLocalizationTarget": "iXenaUnrealTools: New Localization Target",
+  "command.gatherLocalization": "iXenaUnrealTools: Gather and Export Localization",
+  "command.compileLocalization": "iXenaUnrealTools: Import and Compile Localization",
+  "command.stopLocalization": "iXenaUnrealTools: Stop Localization Task",
+  "view.ixenaUnrealTools.localization": "Localization / Translations",
+  "configuration.localization.autoExportOnSave": "Automatically export PO, CSV and JSON copies of discovered PO files on save to project Saved/iXenaUnrealTools/LocalizationExports. Does not run the engine automatically."
 }
