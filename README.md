@@ -152,18 +152,6 @@ bash ./Tools/Build-Plugin.sh \
 
 此示例可按需合并到现有 `.code-workspace`；不要覆盖 UE 已生成的 `tasks` 和 `launch`。
 
-## 常见问题
-
-**UE 插件已复制，但连接不上？** 检查插件是否启用、Editor 是否已重新启动、项目和引擎是否匹配；复制文件不代表插件已加载。
-
-**热更新完成却没有显示所有编译日志？** 部分输出仅存在于独立 Live Coding Console，VSCode 只展示实际接收到的日志。
-
-**VSCode 出现重复 iXena 命令？** 检查是否同时安装了旧发布者 `ixena-local` 与新发布者 `ixena-unreal-tools` 的扩展。
-
-**UE 顶部出现两个 iXena 菜单？** 确保 QtQuickUI 与 Bridge 使用兼容的菜单注册方式，并在更新 Bridge DLL 后重启 UE。
-
-**插件无法在其他 UE 版本加载？** UE 二进制通常需要针对目标引擎、系统及架构重新编译；不要直接复用另一版本的 DLL。
-
 ## 许可证
 
 MIT License。Copyright (c) 2026 黄小宇。详见 [LICENSE](LICENSE)。Unreal Engine 和第三方依赖仍遵守各自许可证。
