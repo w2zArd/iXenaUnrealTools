@@ -152,18 +152,6 @@ Supports **Auto, Simplified Chinese, and English**.
 
 Merge the settings into your existing `.code-workspace` as needed; do not overwrite UE-generated `tasks` or `launch` entries.
 
-## Troubleshooting
-
-**Plugin files are present, but VSCode cannot connect?** Check that the plugin is enabled, UE Editor was restarted, and the selected project and engine match. Copied files do not imply the plugin is loaded.
-
-**Why are some Live Coding log lines missing?** Some output remains in the standalone Live Coding Console. VSCode shows only what it receives.
-
-**Duplicate iXena commands in VSCode?** Check whether both the old `ixena-local` and current `ixena-unreal-tools` publisher versions are installed.
-
-**Two iXena top-level menus in UE?** Make sure QtQuickUI and Bridge use compatible menu registration, and restart UE after updating the Bridge DLL.
-
-**Plugin fails to load in another UE version?** Rebuild the plugin for the target engine, OS, and architecture rather than reusing a DLL from another version.
-
 ## License
 
 MIT License. Copyright (c) 2026 黄小宇. See [LICENSE](LICENSE). Unreal Engine and third-party dependencies retain their respective licenses.
