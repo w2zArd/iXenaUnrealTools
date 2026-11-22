@@ -1,0 +1,32 @@
+{
+  "FileVersion": 3,
+  "Version": 601,
+  "VersionName": "0.6.2",
+  "FriendlyName": "iXena Unreal Bridge",
+  "Description": "Editor communication, searchable console commands with bilingual help, CPU/memory monitoring and Live Coding tools. No MCP service required.",
+  "Category": "iXena",
+  "CreatedBy": "黄小宇",
+  "EnabledByDefault": false,
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Installed": false,
+  "SupportedTargetPlatforms": [
+    "Win64",
+    "Mac",
+    "Linux"
+  ],
+  "Modules": [
+    {
+      "Name": "iXenaUnrealBridge",
+      "Type": "Editor",
+      "LoadingPhase": "PostEngineInit",
+      "PlatformAllowList": [
+        "Win64",
+        "Mac",
+        "Linux"
+      ]
+    }
+  ],
+  "DocsURL": "https://github.com/w2zArd/iXenaUnrealTools",
+  "SupportURL": "https://github.com/w2zArd/iXenaUnrealTools/issues"
+}

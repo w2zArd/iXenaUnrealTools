@@ -1,0 +1,13 @@
+// 把这些属性合并进你现有 Project.code-workspace 的 settings；不要覆盖原有 folders/tasks/launch。
+{
+  "settings": {
+    "iXenaUnrealTools.explorer.panes": [
+      { "label": "🛄 插件", "roots": ["${workspaceFolder:➡️ 当前项目}/Plugins"] },
+      { "label": "♻️ UI", "roots": ["${workspaceFolder:➡️ 当前项目}/Source/UE5Test/QMLs"] },
+      { "label": "✳️ 公有", "roots": ["${workspaceFolder:➡️ 当前项目}/Source/UE5Test/Public"] },
+      { "label": "㊙️ 私有", "roots": ["${workspaceFolder:➡️ 当前项目}/Source/UE5Test/Private"] }
+    ],
+    "iXenaUnrealTools.explorer.showHidden": false,
+    "iXenaUnrealTools.explorer.showContent": false
+  }
+}

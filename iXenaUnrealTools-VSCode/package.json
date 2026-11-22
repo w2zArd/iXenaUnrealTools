@@ -1,0 +1,712 @@
+{
+  "name": "ixena-unreal-tools",
+  "displayName": "iXenaUnrealTools",
+  "description": "%extension.description%",
+  "version": "0.6.2",
+  "publisher": "ixena-unreal-tools",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other",
+    "Debuggers",
+    "Visualization"
+  ],
+  "keywords": [
+    "iXena",
+    "UnrealEngine",
+    "UE5",
+    "build",
+    "tasks",
+    "Build.cs",
+    "modules",
+    "Public",
+    "Private",
+    "uproject",
+    "uplugin",
+    "Explorer",
+    "localization",
+    "MCP"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onUri",
+    "onCustomEditor:iXenaUnrealTools.descriptorEditor"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "%workspace.trustDescription%"
+    },
+    "virtualWorkspaces": {
+      "supported": false
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "watch": "tsc -watch -p .",
+    "test": "npm run compile && node --test test/*.test.cjs",
+    "vscode:prepublish": "npm run compile",
+    "package": "vsce package --allow-missing-repository",
+    "test:host": "npm run compile && node scripts/test-host.cjs",
+    "test:ui": "npm run compile && node --test test/ui/*.test.cjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@types/vscode": "^1.96.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "iXenaUnrealTools.selectConfiguration",
+        "title": "%command.selectConfiguration%"
+      },
+      {
+        "command": "iXenaUnrealTools.build",
+        "title": "%command.build%"
+      },
+      {
+        "command": "iXenaUnrealTools.buildStandard",
+        "title": "%command.buildStandard%",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "iXenaUnrealTools.liveCoding",
+        "title": "%command.liveCoding%",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "iXenaUnrealTools.selectBuildMode",
+        "title": "%command.selectBuildMode%",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "iXenaUnrealTools.toggleBuild",
+        "title": "%command.toggleBuild%"
+      },
+      {
+        "command": "iXenaUnrealTools.stop",
+        "title": "%command.stop%"
+      },
+      {
+        "command": "iXenaUnrealTools.rebuild",
+        "title": "%command.rebuild%"
+      },
+      {
+        "command": "iXenaUnrealTools.clean",
+        "title": "%command.clean%"
+      },
+      {
+        "command": "iXenaUnrealTools.debug",
+        "title": "%command.debug%"
+      },
+      {
+        "command": "iXenaUnrealTools.selectDebug",
+        "title": "%command.selectDebug%"
+      },
+      {
+        "command": "iXenaUnrealTools.refresh",
+        "title": "%command.refresh%"
+      },
+      {
+        "command": "iXenaUnrealTools.openLastBuildLog",
+        "title": "%command.openLastBuildLog%"
+      },
+      {
+        "command": "iXenaUnrealTools.showLog",
+        "title": "%command.showLog%"
+      },
+      {
+        "command": "iXenaUnrealTools.menu",
+        "title": "%command.menu%"
+      },
+      {
+        "command": "iXenaUnrealTools.openSource",
+        "title": "%command.openSource%"
+      },
+      {
+        "command": "iXenaUnrealTools.runOriginal",
+        "title": "%command.runOriginal%"
+      },
+      {
+        "command": "iXenaUnrealTools.selectExplorerScope",
+        "title": "%command.selectExplorerScope%",
+        "icon": "$(list-selection)"
+      },
+      {
+        "command": "iXenaUnrealTools.refreshSidePanel",
+        "title": "%command.refreshSidePanel%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "iXenaUnrealTools.selectRuleFile",
+        "title": "%command.selectRuleFile%",
+        "icon": "$(list-selection)"
+      },
+      {
+        "command": "iXenaUnrealTools.editDependencies",
+        "title": "%command.editDependencies%",
+        "icon": "$(references)"
+      },
+      {
+        "command": "iXenaUnrealTools.tailLog",
+        "title": "%command.tailLog%",
+        "icon": "$(output)"
+      },
+      {
+        "command": "iXenaUnrealTools.launchEditor",
+        "title": "%command.launchEditor%",
+        "icon": "$(play)"
+      },
+      {
+        "command": "iXenaUnrealTools.generateProjectFiles",
+        "title": "%command.generateProjectFiles%",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "iXenaUnrealTools.openProjectDirectory",
+        "title": "%command.openProjectDirectory%",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "iXenaUnrealTools.copyBuildCommand",
+        "title": "%command.copyBuildCommand%",
+        "icon": "$(copy)"
+      },
+      {
+        "command": "iXenaUnrealTools.selectEngine",
+        "title": "%command.selectEngine%",
+        "icon": "$(layers)"
+      },
+      {
+        "command": "iXenaUnrealTools.resetEngine",
+        "title": "%command.resetEngine%",
+        "icon": "$(history)"
+      },
+      {
+        "command": "iXenaUnrealTools.refreshUht",
+        "title": "%command.refreshUht%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "iXenaUnrealTools.fixIntelliSense",
+        "title": "%command.fixIntelliSense%",
+        "icon": "$(symbol-color)"
+      },
+      {
+        "command": "iXenaUnrealTools.switchHeaderSource",
+        "title": "%command.switchHeaderSource%",
+        "icon": "$(arrow-swap)"
+      },
+      {
+        "command": "iXenaUnrealTools.editDescriptor",
+        "title": "%command.editDescriptor%",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "iXenaUnrealTools.registerExplorerMenu",
+        "title": "%command.registerExplorerMenu%",
+        "icon": "$(add)",
+        "enablement": "iXenaUnrealTools.windowsIntegrationAvailable"
+      },
+      {
+        "command": "iXenaUnrealTools.removeExplorerMenu",
+        "title": "%command.removeExplorerMenu%",
+        "icon": "$(remove)",
+        "enablement": "iXenaUnrealTools.windowsIntegrationAvailable"
+      },
+      {
+        "command": "iXenaUnrealTools.explorerMenuStatus",
+        "title": "%command.explorerMenuStatus%",
+        "icon": "$(info)",
+        "enablement": "iXenaUnrealTools.windowsIntegrationAvailable"
+      },
+      {
+        "command": "iXenaUnrealTools.selectCommunicationTarget",
+        "title": "%command.selectCommunicationTarget%",
+        "icon": "$(root-folder)"
+      },
+      {
+        "command": "iXenaUnrealTools.checkCommunication",
+        "title": "%command.checkCommunication%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "iXenaUnrealTools.compileThroughConnection",
+        "title": "%command.compileThroughConnection%",
+        "icon": "$(zap)"
+      },
+      {
+        "command": "iXenaUnrealTools.showLiveCodingLog",
+        "title": "%command.showLiveCodingLog%",
+        "icon": "$(output)"
+      },
+      {
+        "command": "iXenaUnrealTools.openLiveCodingLog",
+        "title": "%command.openLiveCodingLog%",
+        "icon": "$(file-text)"
+      },
+      {
+        "command": "iXenaUnrealTools.buildNativeEditor",
+        "title": "%command.buildNativeEditor%",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "iXenaUnrealTools.newClass",
+        "title": "%command.newClass%",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "iXenaUnrealTools.ueConsole",
+        "title": "%command.ueConsole%",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "iXenaUnrealTools.showPerformance",
+        "title": "%command.showPerformance%",
+        "icon": "$(pulse)"
+      },
+      {
+        "command": "iXenaUnrealTools.openUnrealInsights",
+        "title": "%command.openUnrealInsights%",
+        "icon": "$(graph-line)"
+      },
+      {
+        "command": "iXenaUnrealTools.initializeEnginePlugin",
+        "title": "%command.initializeEnginePlugin%",
+        "icon": "$(plug)"
+      },
+      {
+        "command": "iXenaUnrealTools.openPluginRepository",
+        "title": "%command.openPluginRepository%",
+        "icon": "$(github)"
+      },
+      {
+        "command": "iXenaUnrealTools.selectLanguage",
+        "title": "%command.selectLanguage%",
+        "icon": "$(globe)"
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "ixena-unreal-tools",
+        "required": [
+          "owner",
+          "taskKey"
+        ],
+        "properties": {
+          "owner": {
+            "type": "string",
+            "description": "%task.owner%"
+          },
+          "taskKey": {
+            "type": "string",
+            "description": "%task.taskKey%"
+          }
+        }
+      }
+    ],
+    "configuration": {
+      "title": "iXenaUnrealTools",
+      "properties": {
+        "iXenaUnrealTools.build.mode": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "ubt"
+          ],
+          "default": "auto",
+          "scope": "resource",
+          "enumDescriptions": [
+            "%config.iXenaUnrealTools.build.mode.enumDescriptions.0%",
+            "%config.iXenaUnrealTools.build.mode.enumDescriptions.1%"
+          ],
+          "description": "%config.iXenaUnrealTools.build.mode.description%"
+        },
+        "iXenaUnrealTools.dotnetPath": {
+          "type": "string",
+          "default": "",
+          "scope": "resource",
+          "description": "%config.iXenaUnrealTools.dotnetPath.description%"
+        },
+        "iXenaUnrealTools.openLogAfterStop": {
+          "type": "boolean",
+          "default": false,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.openLogAfterStop.description%"
+        },
+        "iXenaUnrealTools.saveBeforeBuild": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "%config.iXenaUnrealTools.saveBeforeBuild.description%"
+        },
+        "iXenaUnrealTools.showDebugButton": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.showDebugButton.description%"
+        },
+        "iXenaUnrealTools.hideWhenNoTasks": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.hideWhenNoTasks.description%"
+        },
+        "iXenaUnrealTools.alignment": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right"
+          ],
+          "default": "left",
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.alignment.description%"
+        },
+        "iXenaUnrealTools.priority": {
+          "type": "number",
+          "default": 100,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.priority.description%"
+        },
+        "iXenaUnrealTools.explorer.panes": {
+          "type": "array",
+          "scope": "window",
+          "default": [],
+          "description": "%config.iXenaUnrealTools.explorer.panes.description%",
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "roots"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "%config.iXenaUnrealTools.explorer.panes.label%"
+              },
+              "roots": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "%config.iXenaUnrealTools.explorer.panes.roots%"
+              }
+            }
+          }
+        },
+        "iXenaUnrealTools.explorer.showContent": {
+          "type": "boolean",
+          "scope": "window",
+          "default": false,
+          "description": "%config.iXenaUnrealTools.explorer.showContent.description%"
+        },
+        "iXenaUnrealTools.explorer.showHidden": {
+          "type": "boolean",
+          "scope": "window",
+          "default": false,
+          "description": "%config.iXenaUnrealTools.explorer.showHidden.description%"
+        },
+        "iXenaUnrealTools.engineRoots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.engineRoots.description%"
+        },
+        "iXenaUnrealTools.intelliSense.refreshOnHeaderSave": {
+          "type": "boolean",
+          "default": false,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.intelliSense.refreshOnHeaderSave.description%"
+        },
+        "iXenaUnrealTools.intelliSense.debounceMs": {
+          "type": "number",
+          "default": 1800,
+          "minimum": 500,
+          "maximum": 30000,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.intelliSense.debounceMs.description%"
+        },
+        "iXenaUnrealTools.intelliSense.refreshLanguageServer": {
+          "type": "boolean",
+          "default": true,
+          "scope": "window",
+          "description": "%config.iXenaUnrealTools.intelliSense.refreshLanguageServer.description%"
+        },
+        "iXenaUnrealTools.explorerIntegration.codePath": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "%config.iXenaUnrealTools.explorerIntegration.codePath.description%"
+        },
+        "iXenaUnrealTools.liveCoding.transport": {
+          "type": "string",
+          "enum": [
+            "plugin",
+            "mcp"
+          ],
+          "default": "plugin",
+          "scope": "resource",
+          "enumDescriptions": [
+            "%config.iXenaUnrealTools.liveCoding.transport.enumDescriptions.0%",
+            "%config.iXenaUnrealTools.liveCoding.transport.enumDescriptions.1%"
+          ],
+          "description": "%config.iXenaUnrealTools.liveCoding.transport.description%"
+        },
+        "iXenaUnrealTools.liveCoding.mcpUrl": {
+          "type": "string",
+          "default": "http://127.0.0.1:8000/mcp",
+          "scope": "resource",
+          "description": "%config.iXenaUnrealTools.liveCoding.mcpUrl.description%"
+        },
+        "iXenaUnrealTools.liveCoding.timeoutSeconds": {
+          "type": "number",
+          "default": 900,
+          "minimum": 30,
+          "maximum": 3600,
+          "scope": "resource",
+          "description": "%config.iXenaUnrealTools.liveCoding.timeoutSeconds.description%"
+        },
+        "iXenaUnrealTools.performance.autoStartDebug": {
+          "type": "boolean",
+          "default": true,
+          "scope": "resource",
+          "description": "%config.iXenaUnrealTools.performance.autoStartDebug.description%"
+        },
+        "iXenaUnrealTools.language": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "zh-CN",
+            "en"
+          ],
+          "default": "auto",
+          "scope": "window",
+          "enumDescriptions": [
+            "%config.iXenaUnrealTools.language.enumDescriptions.0%",
+            "%config.iXenaUnrealTools.language.enumDescriptions.1%",
+            "%config.iXenaUnrealTools.language.enumDescriptions.2%"
+          ],
+          "description": "%config.iXenaUnrealTools.language.description%"
+        }
+      }
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "iXenaUnrealTools.stop",
+          "when": "iXenaUnrealTools.busy"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "iXenaUnrealTools.selectExplorerScope",
+          "when": "view == ixenaUnrealTools.explorer",
+          "group": "navigation@1"
+        },
+        {
+          "command": "iXenaUnrealTools.refreshSidePanel",
+          "when": "view == ixenaUnrealTools.explorer",
+          "group": "navigation@2"
+        },
+        {
+          "command": "iXenaUnrealTools.selectRuleFile",
+          "when": "view == ixenaUnrealTools.rules",
+          "group": "navigation@1"
+        },
+        {
+          "command": "iXenaUnrealTools.editDependencies",
+          "when": "view == ixenaUnrealTools.rules",
+          "group": "navigation@2"
+        },
+        {
+          "command": "iXenaUnrealTools.refreshSidePanel",
+          "when": "view == ixenaUnrealTools.rules",
+          "group": "navigation@3"
+        },
+        {
+          "command": "iXenaUnrealTools.tailLog",
+          "when": "view == ixenaUnrealTools.logs",
+          "group": "navigation@1"
+        },
+        {
+          "command": "iXenaUnrealTools.refreshSidePanel",
+          "when": "view == ixenaUnrealTools.logs",
+          "group": "navigation@2"
+        },
+        {
+          "command": "iXenaUnrealTools.checkCommunication",
+          "when": "view == ixenaUnrealTools.communication",
+          "group": "navigation@1"
+        },
+        {
+          "command": "iXenaUnrealTools.initializeEnginePlugin",
+          "when": "view == ixenaUnrealTools.communication",
+          "group": "navigation@2"
+        },
+        {
+          "command": "iXenaUnrealTools.newClass",
+          "when": "view == ixenaUnrealTools.rules",
+          "group": "navigation@4"
+        },
+        {
+          "command": "iXenaUnrealTools.newClass",
+          "when": "view == ixenaUnrealTools.explorer",
+          "group": "navigation@3"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "iXenaUnrealTools.editDependencies",
+          "when": "view == ixenaUnrealTools.rules && viewItem == ixenaModule",
+          "group": "inline@1"
+        },
+        {
+          "command": "iXenaUnrealTools.tailLog",
+          "when": "view == ixenaUnrealTools.logs && viewItem == ixenaLog",
+          "group": "inline@1"
+        },
+        {
+          "command": "iXenaUnrealTools.editDescriptor",
+          "when": "view == ixenaUnrealTools.rules && viewItem == ixenaDescriptor",
+          "group": "inline@1"
+        },
+        {
+          "command": "iXenaUnrealTools.switchHeaderSource",
+          "when": "view == ixenaUnrealTools.explorer && viewItem == file && resourceScheme == file && resourceExtname =~ /\\.(h|hpp|hh|hxx|cpp|cc|cxx|c)$/i && !(resourceFilename =~ /\\.(generated\\.h|gen\\.cpp|generated\\.cpp|init\\.gen\\.cpp)$/i)",
+          "group": "inline@1"
+        },
+        {
+          "command": "iXenaUnrealTools.newClass",
+          "when": "view == ixenaUnrealTools.explorer && viewItem == directory",
+          "group": "inline@2"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "iXenaUnrealTools.switchHeaderSource",
+          "when": "resourceScheme == file && resourceExtname =~ /\\.(h|hpp|hh|hxx|cpp|cc|cxx|c)$/i && !(resourceFilename =~ /\\.(generated\\.h|gen\\.cpp|generated\\.cpp|init\\.gen\\.cpp)$/i)",
+          "group": "2_workspace@9"
+        },
+        {
+          "command": "iXenaUnrealTools.editDescriptor",
+          "when": "resourceExtname =~ /\\.(uproject|uplugin)$/i",
+          "group": "2_workspace@10"
+        },
+        {
+          "command": "iXenaUnrealTools.newClass",
+          "when": "resourceScheme == file",
+          "group": "2_workspace@8"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "iXenaUnrealTools.switchHeaderSource",
+          "when": "resourceScheme == file && resourceExtname =~ /\\.(h|hpp|hh|hxx|cpp|cc|cxx|c)$/i && !(resourceFilename =~ /\\.(generated\\.h|gen\\.cpp|generated\\.cpp|init\\.gen\\.cpp)$/i)",
+          "group": "navigation@11"
+        },
+        {
+          "command": "iXenaUnrealTools.editDescriptor",
+          "when": "resourceExtname =~ /\\.(uproject|uplugin)$/i",
+          "group": "navigation@12"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "iXenaUnrealTools.switchHeaderSource",
+          "when": "resourceScheme == file && resourceExtname =~ /\\.(h|hpp|hh|hxx|cpp|cc|cxx|c)$/i && !(resourceFilename =~ /\\.(generated\\.h|gen\\.cpp|generated\\.cpp|init\\.gen\\.cpp)$/i)",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "iXenaUnrealTools.switchHeaderSource",
+          "when": "resourceScheme == file && resourceExtname =~ /\\.(h|hpp|hh|hxx|cpp|cc|cxx|c)$/i && !(resourceFilename =~ /\\.(generated\\.h|gen\\.cpp|generated\\.cpp|init\\.gen\\.cpp)$/i)",
+          "group": "navigation@1"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ixenaUnrealTools",
+          "title": "iXena Unreal",
+          "icon": "resources/ixena.svg"
+        }
+      ]
+    },
+    "views": {
+      "ixenaUnrealTools": [
+        {
+          "id": "ixenaUnrealTools.communication",
+          "name": "%view.ixenaUnrealTools.communication%"
+        },
+        {
+          "id": "ixenaUnrealTools.explorer",
+          "name": "%view.ixenaUnrealTools.explorer%",
+          "when": "iXenaUnrealTools.explorerConfigured"
+        },
+        {
+          "id": "ixenaUnrealTools.rules",
+          "name": "%view.ixenaUnrealTools.rules%"
+        },
+        {
+          "id": "ixenaUnrealTools.logs",
+          "name": "%view.ixenaUnrealTools.logs%"
+        },
+        {
+          "id": "ixenaUnrealTools.actions",
+          "name": "%view.ixenaUnrealTools.actions%"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "iXenaUnrealTools.descriptorEditor",
+        "displayName": "%customEditor.iXenaUnrealTools.descriptorEditor%",
+        "selector": [
+          {
+            "filenamePattern": "*.uproject"
+          },
+          {
+            "filenamePattern": "*.uplugin"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
+    "languages": [
+      {
+        "id": "json",
+        "extensions": [
+          ".uproject",
+          ".uplugin"
+        ]
+      }
+    ]
+  },
+  "author": "黄小宇",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/w2zArd/iXenaUnrealTools.git",
+    "directory": "iXenaUnrealTools-VSCode"
+  },
+  "homepage": "https://github.com/w2zArd/iXenaUnrealTools",
+  "bugs": {
+    "url": "https://github.com/w2zArd/iXenaUnrealTools/issues"
+  }
+}

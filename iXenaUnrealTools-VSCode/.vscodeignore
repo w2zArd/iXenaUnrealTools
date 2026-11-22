@@ -1,0 +1,15 @@
+.vscode/**
+src/**
+test/**
+scripts/**
+tsconfig.json
+package-lock.json
+**/*.vsix
+**/*.tsbuildinfo
+dist/**/*.map
+node_modules/jsonc-parser/src/**
+node_modules/jsonc-parser/lib/esm/**
+node_modules/jsonc-parser/tsconfig.json
+.DS_Store
+VALIDATION.md
+

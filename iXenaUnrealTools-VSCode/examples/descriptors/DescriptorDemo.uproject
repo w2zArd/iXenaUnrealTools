@@ -1,0 +1,32 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.9",
+    "Category": "iXena 编辑器示例",
+    "Description": "独立描述文件示例，不含可编译的游戏源码。",
+    "Modules": [
+        {
+            "Name": "StarchainWorks",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "WhitelistPlatforms": [
+                "Win64"
+            ],
+            "CustomModuleField": "编辑加载阶段后此字段仍保留"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "PlanetWorld",
+            "Enabled": true,
+            "Optional": false
+        },
+        {
+            "Name": "QtQuickUI",
+            "Enabled": true
+        }
+    ],
+    "CustomProjectSettings": {
+        "PlanetGravity": "Local",
+        "Camera": "FirstAndThirdPerson"
+    }
+}

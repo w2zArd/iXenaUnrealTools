@@ -1,0 +1,38 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "0.1.0",
+    "FriendlyName": "Planet World 示例 🌍",
+    "Description": "使用此文件体验插件描述编辑器；它不是可安装的完整插件。",
+    "Category": "iXena",
+    "CreatedBy": "黄小宇",
+    "CanContainContent": true,
+    "IsBetaVersion": true,
+    "Modules": [
+        {
+            "Name": "PlanetWorld",
+            "Type": "Runtime",
+            "LoadingPhase": "Default",
+            "PlatformAllowList": [
+                "Win64"
+            ],
+            "VendorMetadata": {
+                "keep": true
+            }
+        },
+        {
+            "Name": "PlanetWorldEditor",
+            "Type": "Editor",
+            "LoadingPhase": "Default"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "ProceduralMeshComponent",
+            "Enabled": true
+        }
+    ],
+    "CustomPluginSettings": {
+        "PreserveUnknownFields": true
+    }
+}

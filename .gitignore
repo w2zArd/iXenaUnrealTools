@@ -1,0 +1,10 @@
+**/node_modules/
+**/dist/
+**/*.vsix
+**/Binaries/
+**/Intermediate/
+**/Saved/
+**/DerivedDataCache/
+**/__pycache__/
+**/*.pyc
+.DS_Store
