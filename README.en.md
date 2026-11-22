@@ -7,7 +7,7 @@ iXenaUnrealTools is a toolkit for Unreal Engine 5 C++ development. It consists o
 - **Author:** 黄小宇
 - **License:** MIT
 - **Repository:** [w2zArd/iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools)
-- **Extension ID:** `ixena-unreal-tools.ixena-unreal-tools`
+- **Extension ID:** `ixena-unreal-tools.ixena-unreal-tools-vscode`
 - **Platforms:** The VSCode extension supports applicable desktop environments; some Windows integration features are Windows-only. The UE plugin provides source for Windows, macOS, and Linux and must be built using the matching UE toolchain.
 
 ## Screenshots
@@ -34,7 +34,7 @@ iXenaUnrealTools/
 ## Install the VSCode extension
 
 1. Install iXenaUnrealTools using either method:
-   - **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools)** (recommended): Search for `iXenaUnrealTools` in VSCode and install it directly.
+   - **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools-vscode)** (recommended): Search for `iXenaUnrealTools` in VSCode and install it directly.
    - **[GitHub Releases](https://github.com/w2zArd/iXenaUnrealTools/releases)**: Download the `.vsix` package for your preferred version, or build from source.
 2. In VSCode Extensions, select **Install from VSIX** and choose the package.
 3. Run `Developer: Reload Window`.

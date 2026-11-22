@@ -7,7 +7,7 @@ iXenaUnrealTools 是面向 Unreal Engine 5 C++ 开发的工具集，由 **VSCode
 - **作者**：黄小宇
 - **许可证**：MIT
 - **源码仓库**：[w2zArd/iXenaUnrealTools](https://github.com/w2zArd/iXenaUnrealTools)
-- **扩展 ID**：`ixena-unreal-tools.ixena-unreal-tools`
+- **扩展 ID**：`ixena-unreal-tools.ixena-unreal-tools-vscode`
 - **平台**：VSCode 扩展支持相应桌面环境；部分 Windows 集成功能仅限 Windows。UE 通讯插件提供 Windows、macOS、Linux 源码，实际编译需使用对应平台的 UE 工具链。
 
 ## 界面预览
@@ -34,7 +34,7 @@ iXenaUnrealTools/
 ## 安装 VSCode 扩展
 
 1. 从以下任一渠道安装 iXenaUnrealTools：
-   - **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools)**（推荐）：直接在 VSCode 中搜索 `iXenaUnrealTools` 并安装。
+   - **[VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=ixena-unreal-tools.ixena-unreal-tools-vscode)**（推荐）：直接在 VSCode 中搜索 `iXenaUnrealTools` 并安装。
    - **[GitHub Releases](https://github.com/w2zArd/iXenaUnrealTools/releases)**：下载对应版本的 `.vsix` 安装包，或从源码自行构建。
 2. 在 VSCode 的扩展视图选择 **从 VSIX 安装**，选择安装包。
 3. 执行 `Developer: Reload Window`。
